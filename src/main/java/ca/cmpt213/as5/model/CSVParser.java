@@ -18,8 +18,28 @@ public class CSVParser {
         Scanner read = new Scanner(file);
         while (read.hasNextLine()) {
             String[] fields = read.nextLine().split(",");
-            courseList.add(new CourseData(fields));
+            CourseData tobeAdded = new CourseData(fields);
+            addToCourseList(tobeAdded);
         }
         read.close();
+    }
+
+    public void addToCourseList(CourseData currentCourse) {
+        for(CourseData courseData: courseList) {
+            if(currentCourse.getSemNumber() == courseData.getSemNumber() &&
+                    currentCourse.getSubject().equals(courseData.getSubject()) &&
+                    currentCourse.getCourseNum().equals(courseData.getCourseNum()) &&
+                    currentCourse.getLocation().equals(courseData.getLocation()) &&
+                    currentCourse.getInstructors().equals(courseData.getInstructors()) &&
+                    currentCourse.getComponent().equals(courseData.getComponent()))
+            {
+                // Add to enrollment cap and total because it is an aggregate, do not add as seperate entry to courseLise
+                courseData.addEnrollmentCap(currentCourse.getEnrollmentCap());
+                courseData.addEnrollmentTotal(currentCourse.getEnrollmentTotal());
+                return;
+            }
+        }
+        // If not found already in courseList, it is not a duplicate and needs to be added to courseList
+        courseList.add(currentCourse);
     }
 }

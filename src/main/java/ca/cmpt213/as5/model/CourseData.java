@@ -1,5 +1,8 @@
 package ca.cmpt213.as5.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.lang.Integer.*;
 
 public class CourseData {
@@ -9,6 +12,7 @@ public class CourseData {
     private String location;
     private int enrollmentCap;
     private int enrollmentTotal;
+    private List<String> instructors;
     private String component;
 
     public CourseData(String[] fields) {
@@ -18,7 +22,11 @@ public class CourseData {
         location = fields[3];
         enrollmentCap = parseInt(fields[4]);
         enrollmentTotal = parseInt(fields[5]);
-        component = fields[6];
+        instructors = new ArrayList<>();
+        for(int i = 6; i < fields.length - 1; i++) {
+            instructors.add(fields[i]);
+        }
+        component = fields[fields.length - 1];
     }
 
     public CourseData() {
@@ -30,6 +38,7 @@ public class CourseData {
     }
 
     public void setSemNumber(int semNumber) {
+
         this.semNumber = semNumber;
     }
 
@@ -65,6 +74,10 @@ public class CourseData {
         this.enrollmentCap = enrollmentCap;
     }
 
+    public void addEnrollmentCap(int aggregateCap) {
+        enrollmentCap += aggregateCap;
+    }
+
     public int getEnrollmentTotal() {
         return enrollmentTotal;
     }
@@ -72,6 +85,19 @@ public class CourseData {
     public void setEnrollmentTotal(int enrollmentTotal) {
         this.enrollmentTotal = enrollmentTotal;
     }
+
+    public void addEnrollmentTotal(int aggregateTotal) {
+        enrollmentTotal += aggregateTotal;
+    }
+
+    public List<String> getInstructors() {
+        return instructors;
+    }
+
+    public void setInstructors(List<String> instructors) {
+        this.instructors = instructors;
+    }
+
 
     public String getComponent() {
         return component;
