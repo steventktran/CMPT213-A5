@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/CMPT213_Assignment5.iml" filepath="$PROJECT_DIR$/.idea/modules/CMPT213_Assignment5.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CMPT213_Assignment5_main.iml" filepath="$PROJECT_DIR$/.idea/modules/CMPT213_Assignment5_main.iml" group="CMPT213_Assignment5" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CMPT213_Assignment5_test.iml" filepath="$PROJECT_DIR$/.idea/modules/CMPT213_Assignment5_test.iml" group="CMPT213_Assignment5" />
     </modules>
   </component>
 </project>
