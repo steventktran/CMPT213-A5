@@ -14,15 +14,12 @@ public class CSVParser {
         this.file = file;
     }
 
-    public void parseFile() {
-        try {
-            Scanner read = new Scanner(file);
-            while (read.hasNextLine()) {
-                String[] fields = read.nextLine().split(",");
-                courseList.add(new CourseData(fields));
-            }
-        } catch (FileNotFoundException e){
-
+    public void parseFile() throws FileNotFoundException{
+        Scanner read = new Scanner(file);
+        while (read.hasNextLine()) {
+            String[] fields = read.nextLine().split(",");
+            courseList.add(new CourseData(fields));
         }
+        read.close();
     }
 }
