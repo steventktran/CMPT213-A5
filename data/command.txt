@@ -1,1 +1,1 @@
-curl -i -H "Content-Type: application/json" -X GET localhost:8080//dump-model
+curl -i -H "Content-Type: application/json" -X GET localhost:8080/dump-model
