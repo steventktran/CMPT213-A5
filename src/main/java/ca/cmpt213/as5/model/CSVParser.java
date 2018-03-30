@@ -19,29 +19,37 @@ public class CSVParser {
         String[] headers = read.nextLine().split(",");
         while (read.hasNextLine()) {
             String[] fields = read.nextLine().split(",");
-            CourseData tobeAdded = new CourseData(fields);
-            addToCourseList(tobeAdded);
+            List<String> courseFields = new ArrayList<>();
+            for(int i = 0; i < 4; i++) {
+                courseFields.add(fields[i]);
+            }
+            for(int i = 6; i <= fields.length - 1; i++) {
+                courseFields.add(fields[i]);
+            }
+            String[] componentFields = {fields[4], fields[5], fields[fields.length - 1]};
+            CourseData courseToAdd = new CourseData(courseFields);
+            Component componentToAdd = new Component(componentFields);
+            addToCourseList(courseToAdd, componentToAdd);
         }
         read.close();
     }
 
-    public void addToCourseList(CourseData tobeAdded) {
+    public void addToCourseList(CourseData courseToBeAdded, Component componentToBeAdded) {
         for(CourseData courseData: courseList) {
-            if(tobeAdded.getSemNumber() == courseData.getSemNumber() &&
-                    tobeAdded.getSubject().equals(courseData.getSubject()) &&
-                    tobeAdded.getCourseNum().equals(courseData.getCourseNum()) &&
-                    tobeAdded.getLocation().equals(courseData.getLocation()) &&
-                    tobeAdded.getInstructors().equals(courseData.getInstructors()) &&
-                    tobeAdded.getComponent().equals(courseData.getComponent()))
+            if(courseToBeAdded.getSemNumber() == courseData.getSemNumber() &&
+                    courseToBeAdded.getSubject().equals(courseData.getSubject()) &&
+                    courseToBeAdded.getCourseNum().equals(courseData.getCourseNum()) &&
+                    courseToBeAdded.getLocation().equals(courseData.getLocation()) &&
+                    courseToBeAdded.getInstructors().equals(courseData.getInstructors()) )
             {
                 // Add to enrollment cap and total because it is an aggregate, do not add as seperate entry to courseLise
-                courseData.addEnrollmentCap(tobeAdded.getEnrollmentCap());
-                courseData.addEnrollmentTotal(tobeAdded.getEnrollmentTotal());
+                courseData.addEnrollment(componentToBeAdded);
                 return;
             }
         }
         // If not found already in courseList, it is not a duplicate and needs to be added to courseList
-        courseList.add(tobeAdded);
+        courseToBeAdded.addComponent(componentToBeAdded);
+        courseList.add(courseToBeAdded);
     }
 
     public void printCourseList() {
@@ -49,18 +57,9 @@ public class CSVParser {
         for(CourseData course: courseList) {
             System.out.println(course.getSubject() + " " + course.getCourseNum());
             System.out.println("\t" + course.getSemNumber() + " in " + course.getLocation() + " by " + course.getInstructors());
-            for(CourseData otherCourse: copiedList) {
-                if(otherCourse.getSemNumber() == course.getSemNumber() &&
-                        otherCourse.getSubject().equals(course.getSubject()) &&
-                        otherCourse.getCourseNum().equals(course.getCourseNum()) &&
-                        otherCourse.getLocation().equals(course.getLocation()) &&
-                        otherCourse.getInstructors().equals(course.getInstructors()) &&
-                        !otherCourse.getComponent().equals(course.getComponent()))
-                {
-                    System.out.println("\t\t" + "Type=" + otherCourse.getComponent() + ", Enrollment=" + otherCourse.getEnrollmentTotal() + "/" + otherCourse.getEnrollmentCap());
-                }
+            for(Component component: course.getComponents()) {
+                System.out.println("\t\t" + "Type=" + component.getComponent() + ", Enrollment=" + component.getEnrollmentTotal() + "/" + component.getEnrollmentCap());
             }
-            System.out.println("\t\t" + "Type=" + course.getComponent() + ", Enrollment=" + course.getEnrollmentTotal() + "/" + course.getEnrollmentCap());
         }
     }
 }

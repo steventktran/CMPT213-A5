@@ -10,23 +10,19 @@ public class CourseData {
     private String subject;
     private String courseNum;
     private String location;
-    private int enrollmentCap;
-    private int enrollmentTotal;
     private List<String> instructors;
-    private String component;
+    private List<Component> components;
 
-    public CourseData(String[] fields) {
-        semNumber = parseInt(fields[0]);
-        subject = fields[1].trim();
-        courseNum = fields[2].trim();
-        location = fields[3].trim();
-        enrollmentCap = parseInt(fields[4]);
-        enrollmentTotal = parseInt(fields[5]);
+    public CourseData(List<String> fields) {
+        semNumber = parseInt(fields.get(0));
+        subject = fields.get(1).trim();
+        courseNum = fields.get(2).trim();
+        location = fields.get(3).trim();
         instructors = new ArrayList<>();
-        for(int i = 6; i < fields.length - 1; i++) {
-            instructors.add(fields[i].trim());
+        components = new ArrayList<>();
+        for(int i = 4; i < fields.size()- 1; i++) {
+            instructors.add(fields.get(i).trim());
         }
-        component = fields[fields.length - 1].trim();
     }
 
     public CourseData() {
@@ -66,28 +62,15 @@ public class CourseData {
         this.location = location;
     }
 
-    public int getEnrollmentCap() {
-        return enrollmentCap;
-    }
-
-    public void setEnrollmentCap(int enrollmentCap) {
-        this.enrollmentCap = enrollmentCap;
-    }
-
-    public void addEnrollmentCap(int aggregateCap) {
-        enrollmentCap += aggregateCap;
-    }
-
-    public int getEnrollmentTotal() {
-        return enrollmentTotal;
-    }
-
-    public void setEnrollmentTotal(int enrollmentTotal) {
-        this.enrollmentTotal = enrollmentTotal;
-    }
-
-    public void addEnrollmentTotal(int aggregateTotal) {
-        enrollmentTotal += aggregateTotal;
+    public void addEnrollment(Component tobeAdded) {
+        for(Component component: components) {
+            if(component.getComponent().equals(tobeAdded.getComponent())) {
+                component.addEnrollmentCap(tobeAdded.getEnrollmentCap());
+                component.addEnrollmentTotal(tobeAdded.getEnrollmentTotal());
+                return;
+            }
+        }
+        components.add(tobeAdded);
     }
 
     public String getInstructors() {
@@ -106,12 +89,15 @@ public class CourseData {
         this.instructors = instructors;
     }
 
-
-    public String getComponent() {
-        return component;
+    public List<Component> getComponents() {
+        return components;
     }
 
-    public void setComponent(String component) {
-        this.component = component;
+    public void setComponents(List<Component> components) {
+        this.components = components;
+    }
+
+    public void addComponent(Component component) {
+        components.add(component);
     }
 }
