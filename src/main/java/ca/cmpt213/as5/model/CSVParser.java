@@ -45,9 +45,21 @@ public class CSVParser {
     }
 
     public void printCourseList() {
+        List<CourseData> copiedList = new ArrayList(courseList);
         for(CourseData course: courseList) {
             System.out.println(course.getSubject() + " " + course.getCourseNum());
             System.out.println("\t" + course.getSemNumber() + " in " + course.getLocation() + " by " + course.getInstructors());
+            for(CourseData otherCourse: copiedList) {
+                if(otherCourse.getSemNumber() == course.getSemNumber() &&
+                        otherCourse.getSubject().equals(course.getSubject()) &&
+                        otherCourse.getCourseNum().equals(course.getCourseNum()) &&
+                        otherCourse.getLocation().equals(course.getLocation()) &&
+                        otherCourse.getInstructors().equals(course.getInstructors()) &&
+                        !otherCourse.getComponent().equals(course.getComponent()))
+                {
+                    System.out.println("\t\t" + "Type=" + otherCourse.getComponent() + ", Enrollment=" + otherCourse.getEnrollmentTotal() + "/" + otherCourse.getEnrollmentCap());
+                }
+            }
             System.out.println("\t\t" + "Type=" + course.getComponent() + ", Enrollment=" + course.getEnrollmentTotal() + "/" + course.getEnrollmentCap());
         }
     }

@@ -94,9 +94,9 @@ public class CourseData {
         String instructorString = new String();
         for(int i = 0; i < instructors.size(); i++) {
             if(i == 0) {
-                instructorString += instructors.get(i) + " ";
+                instructorString += instructors.get(i);
             } else {
-                instructorString += ", " + instructors.get(i) + " ";
+                instructorString += ", " + instructors.get(i);
             }
         }
         return instructorString;
