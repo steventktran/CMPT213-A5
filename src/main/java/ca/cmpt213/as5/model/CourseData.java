@@ -11,44 +11,23 @@ import static java.lang.Integer.*;
  */
 
 public class CourseData {
-    private int semNumber;
     private String subject;
     private String courseNum;
-    private String location;
-    private List<String> instructors;
-    private List<Component> components;
+    private List<ClassOffering> classOfferings;
+
 
     //Avoiding magic numbers
-    private static final int SEM_FIELD = 0;
-    private static final int SUBJECT_FIELD = 1;
-    private static final int COURSE_FIELD = 2;
-    private static final int LOCATION_FIELD = 3;
-    private static final int NUM_OF_INSTRUCTORS = 4;
-
+    private static final int SUBJECT_FIELD = 0;
+    private static final int COURSE_FIELD = 1;
 
     public CourseData(List<String> fields) {
-        semNumber = parseInt(fields.get(SEM_FIELD));
         subject = fields.get(SUBJECT_FIELD).trim();
         courseNum = fields.get(COURSE_FIELD).trim();
-        location = fields.get(LOCATION_FIELD).trim();
-        instructors = new ArrayList<>();
-        components = new ArrayList<>();
-        for(int i = NUM_OF_INSTRUCTORS; i < fields.size()- 1; i++) {
-            instructors.add(fields.get(i).trim());
-        }
+        classOfferings = new ArrayList<>();
     }
 
     public CourseData() {
 
-    }
-
-    public int getSemNumber() {
-        return semNumber;
-    }
-
-    public void setSemNumber(int semNumber) {
-
-        this.semNumber = semNumber;
     }
 
     public String getSubject() {
@@ -67,50 +46,22 @@ public class CourseData {
         this.courseNum = courseNum;
     }
 
-    public String getLocation() {
-        return location;
+    public List<ClassOffering> getClassOfferings() {
+        return classOfferings;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public void addEnrollment(Component tobeAdded) {
-        for(Component component: components) {
-            if(component.getComponent().equals(tobeAdded.getComponent())) {
-                component.addEnrollmentCap(tobeAdded.getEnrollmentCap());
-                component.addEnrollmentTotal(tobeAdded.getEnrollmentTotal());
+    public void addClassOffering(ClassOffering offeringToBeAdded, Component componentToBeAdded) {
+        //Check for duplicate class offerings. If there are, addComponent will check if it is also trying to add a duplicate component
+        for(ClassOffering classOffering: classOfferings) {
+            if(classOffering.getSemNumber() == offeringToBeAdded.getSemNumber()
+                    && classOffering.getInstructors().equals(offeringToBeAdded.getInstructors()))
+            {
+                classOffering.addComponent(componentToBeAdded);
                 return;
             }
         }
-        components.add(tobeAdded);
-    }
-
-    public String getInstructors() {
-        String instructorString = new String();
-        for(int i = 0; i < instructors.size(); i++) {
-            if(i == 0) {
-                instructorString += instructors.get(i);
-            } else {
-                instructorString += ", " + instructors.get(i);
-            }
-        }
-        return instructorString;
-    }
-
-    public void setInstructors(List<String> instructors) {
-        this.instructors = instructors;
-    }
-
-    public List<Component> getComponents() {
-        return components;
-    }
-
-    public void setComponents(List<Component> components) {
-        this.components = components;
-    }
-
-    public void addComponent(Component component) {
-        components.add(component);
+        //If not a duplicate class offering, then add to classOfferings list.
+        offeringToBeAdded.addComponent(componentToBeAdded);
+        classOfferings.add(offeringToBeAdded);
     }
 }

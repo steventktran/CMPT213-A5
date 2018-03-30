@@ -14,10 +14,14 @@ import java.util.Scanner;
 public class CSVParser {
     private List<CourseData> courseList = new ArrayList<>();
     private File file;
-    private static final int NUMBER_OF_FIELDS_BEFORE_ENROLLMENT = 4;
-    private static final int ENROLLMENT_FIELD = 4;
-    private static final int ENROLLMENT_TOTAL_FIELD = 5;
-    private static final int INSTRUCTOR_FIELD = 6;
+
+    private static final int SEMESTER_NUMBER_INDEX = 0;
+    private static final int SUBJECT_INDEX = 1;
+    private static final int COURSE_NUMBER_INDEX = 2;
+    private static final int LOCATION_INDEX = 3;
+    private static final int ENROLLMENT_CAP_INDEX = 4;
+    private static final int ENROLLMENT_TOTAL_INDEX = 5;
+    private static final int INSTRUCTOR_INDEX = 6;
 
 
     public CSVParser(File file) {
@@ -33,58 +37,64 @@ public class CSVParser {
         //Reads in the fields of the CSV File
         while (read.hasNextLine()) {
             String[] fields = read.nextLine().split(",");
-            List<String> courseFields = new ArrayList<>();
 
-            //From SEMESTER to LOCATION add the fields
-            for(int i = 0; i <NUMBER_OF_FIELDS_BEFORE_ENROLLMENT; i++) {
+            List<String> courseFields = new ArrayList<>();
+            for(int i = SUBJECT_INDEX ; i <= COURSE_NUMBER_INDEX; i++) {
                 courseFields.add(fields[i]);
             }
 
+            List<String> classOfferingFields = new ArrayList<>();
+            classOfferingFields.add(fields[SEMESTER_NUMBER_INDEX]);
+            classOfferingFields.add(fields[LOCATION_INDEX]);
             //From all Instructors to components
-            for(int i = INSTRUCTOR_FIELD; i <= fields.length - 1; i++) {
-                courseFields.add(fields[i]);
+            for(int i = INSTRUCTOR_INDEX; i <= fields.length - 1; i++) {
+                classOfferingFields.add(fields[i]);
             }
 
             //Get the enrollment cap and enrollment total put them together into one object.
-            String[] componentFields = {fields[ENROLLMENT_FIELD], fields[ENROLLMENT_TOTAL_FIELD],
+            String[] componentFields = {fields[ENROLLMENT_CAP_INDEX], fields[ENROLLMENT_TOTAL_INDEX],
                                         fields[fields.length - 1]};
+
+
             CourseData courseToAdd = new CourseData(courseFields);
             Component componentToAdd = new Component(componentFields);
-            addToCourseList(courseToAdd, componentToAdd);
+            ClassOffering offeringToAdd = new ClassOffering(classOfferingFields);
+
+            addToCourseList(courseToAdd, offeringToAdd, componentToAdd);
         }
         read.close();
     }
 
-    public void addToCourseList(CourseData courseToBeAdded, Component componentToBeAdded) {
+    public void addToCourseList(CourseData courseToBeAdded, ClassOffering offeringToBeAdded, Component componentToBeAdded) {
 
-        //Let's cycle through all the courses and add them if they match with the course we are given
-        //Avoids duplication
         for(CourseData courseData: courseList) {
-            if(courseToBeAdded.getSemNumber() == courseData.getSemNumber() &&
-                    courseToBeAdded.getSubject().equals(courseData.getSubject()) &&
-                    courseToBeAdded.getCourseNum().equals(courseData.getCourseNum()) &&
-                    courseToBeAdded.getLocation().equals(courseData.getLocation()) &&
-                    courseToBeAdded.getInstructors().equals(courseData.getInstructors()) )
+            //If a duplicate course, check to see if also duplicate class offering
+            if(courseData.getSubject().equals(courseToBeAdded.getSubject())
+                    && courseData.getCourseNum().equals(courseToBeAdded.getCourseNum()))
             {
-                // Add to enrollment cap and total because it is an aggregate, do not add as seperate entry to courseLise
-                courseData.addEnrollment(componentToBeAdded);
+                courseData.addClassOffering(offeringToBeAdded, componentToBeAdded);
                 return;
             }
         }
-        // If not found already in courseList, it is not a duplicate and needs to be added to courseList
-        courseToBeAdded.addComponent(componentToBeAdded);
+        //If not a duplicate course, add into course list.
+        courseToBeAdded.addClassOffering(offeringToBeAdded, componentToBeAdded);
         courseList.add(courseToBeAdded);
     }
+
+
 
     //Print all the courses in the list
     public void printCourseList() {
         List<CourseData> copiedList = new ArrayList(courseList);
         for(CourseData course: courseList) {
             System.out.println(course.getSubject() + " " + course.getCourseNum());
-            System.out.println("\t" + course.getSemNumber() + " in " + course.getLocation() + " by " + course.getInstructors());
-            for(Component component: course.getComponents()) {
-                System.out.println("\t\t" + "Type=" + component.getComponent() + ", Enrollment=" + component.getEnrollmentTotal() + "/" + component.getEnrollmentCap());
+            for(ClassOffering classOffering: course.getClassOfferings()) {
+                System.out.println("\t" + classOffering.getSemNumber() + " in " + classOffering.getLocation() + " by " + classOffering.getInstructors());
+                for(Component component: classOffering.getComponents()) {
+                    System.out.println("\t\t" + "Type=" + component.getComponent() + ", Enrollment=" + component.getEnrollmentTotal() + "/" + component.getEnrollmentCap());
+                }
             }
+
         }
     }
 }
