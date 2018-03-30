@@ -16,6 +16,7 @@ public class CSVParser {
 
     public void parseFile() throws FileNotFoundException{
         Scanner read = new Scanner(file);
+        String[] headers = read.nextLine().split(",");
         while (read.hasNextLine()) {
             String[] fields = read.nextLine().split(",");
             CourseData tobeAdded = new CourseData(fields);
@@ -24,22 +25,30 @@ public class CSVParser {
         read.close();
     }
 
-    public void addToCourseList(CourseData currentCourse) {
+    public void addToCourseList(CourseData tobeAdded) {
         for(CourseData courseData: courseList) {
-            if(currentCourse.getSemNumber() == courseData.getSemNumber() &&
-                    currentCourse.getSubject().equals(courseData.getSubject()) &&
-                    currentCourse.getCourseNum().equals(courseData.getCourseNum()) &&
-                    currentCourse.getLocation().equals(courseData.getLocation()) &&
-                    currentCourse.getInstructors().equals(courseData.getInstructors()) &&
-                    currentCourse.getComponent().equals(courseData.getComponent()))
+            if(tobeAdded.getSemNumber() == courseData.getSemNumber() &&
+                    tobeAdded.getSubject().equals(courseData.getSubject()) &&
+                    tobeAdded.getCourseNum().equals(courseData.getCourseNum()) &&
+                    tobeAdded.getLocation().equals(courseData.getLocation()) &&
+                    tobeAdded.getInstructors().equals(courseData.getInstructors()) &&
+                    tobeAdded.getComponent().equals(courseData.getComponent()))
             {
                 // Add to enrollment cap and total because it is an aggregate, do not add as seperate entry to courseLise
-                courseData.addEnrollmentCap(currentCourse.getEnrollmentCap());
-                courseData.addEnrollmentTotal(currentCourse.getEnrollmentTotal());
+                courseData.addEnrollmentCap(tobeAdded.getEnrollmentCap());
+                courseData.addEnrollmentTotal(tobeAdded.getEnrollmentTotal());
                 return;
             }
         }
         // If not found already in courseList, it is not a duplicate and needs to be added to courseList
-        courseList.add(currentCourse);
+        courseList.add(tobeAdded);
+    }
+
+    public void printCourseList() {
+        for(CourseData course: courseList) {
+            System.out.println(course.getSubject() + " " + course.getCourseNum());
+            System.out.println("\t" + course.getSemNumber() + " in " + course.getLocation() + " by " + course.getInstructors());
+            System.out.println("\t\t" + "Type=" + course.getComponent() + ", Enrollment=" + course.getEnrollmentTotal() + "/" + course.getEnrollmentCap());
+        }
     }
 }

@@ -17,16 +17,16 @@ public class CourseData {
 
     public CourseData(String[] fields) {
         semNumber = parseInt(fields[0]);
-        subject = fields[1];
-        courseNum = fields[2];
-        location = fields[3];
+        subject = fields[1].trim();
+        courseNum = fields[2].trim();
+        location = fields[3].trim();
         enrollmentCap = parseInt(fields[4]);
         enrollmentTotal = parseInt(fields[5]);
         instructors = new ArrayList<>();
         for(int i = 6; i < fields.length - 1; i++) {
-            instructors.add(fields[i]);
+            instructors.add(fields[i].trim());
         }
-        component = fields[fields.length - 1];
+        component = fields[fields.length - 1].trim();
     }
 
     public CourseData() {
@@ -90,8 +90,16 @@ public class CourseData {
         enrollmentTotal += aggregateTotal;
     }
 
-    public List<String> getInstructors() {
-        return instructors;
+    public String getInstructors() {
+        String instructorString = new String();
+        for(int i = 0; i < instructors.size(); i++) {
+            if(i == 0) {
+                instructorString += instructors.get(i) + " ";
+            } else {
+                instructorString += ", " + instructors.get(i) + " ";
+            }
+        }
+        return instructorString;
     }
 
     public void setInstructors(List<String> instructors) {
