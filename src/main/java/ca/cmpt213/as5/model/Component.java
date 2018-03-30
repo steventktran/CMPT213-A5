@@ -7,6 +7,7 @@ public class Component {
     private int enrollmentTotal;
     private String component;
 
+
     public Component(String[] fields) {
         enrollmentCap = parseInt(fields[0]);
         enrollmentTotal = parseInt(fields[1]);
