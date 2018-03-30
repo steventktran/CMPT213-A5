@@ -21,7 +21,7 @@ public class ClassOffering {
         instructors = new ArrayList<>();
         components = new ArrayList<>();
         for(int i = NUM_OF_INSTRUCTORS; i < fields.size()- 1; i++) {
-            instructors.add(fields.get(i).trim());
+            instructors.add(fields.get(i).replace("\"", " ").trim());
         }
     }
 
@@ -53,7 +53,8 @@ public class ClassOffering {
             for(int i = 0; i < instructors.size(); i++) {
                 if(i == 0) {
                     instructorString += instructors.get(i).substring(1);
-                } else {
+                }
+                else {
                     instructorString += ", " + instructors.get(i);
                 }
             }
