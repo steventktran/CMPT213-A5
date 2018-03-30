@@ -44,11 +44,18 @@ public class ClassOffering {
 
     public String getInstructors() {
         String instructorString = new String();
-        for(int i = 0; i < instructors.size(); i++) {
-            if(i == 0) {
-                instructorString += instructors.get(i);
-            } else {
-                instructorString += ", " + instructors.get(i);
+        if(instructors.size() == 1) {
+            instructorString = instructors.get(0);
+            return instructorString;
+        }
+
+        else {
+            for(int i = 0; i < instructors.size(); i++) {
+                if(i == 0) {
+                    instructorString += instructors.get(i).substring(1);
+                } else {
+                    instructorString += ", " + instructors.get(i);
+                }
             }
         }
         return instructorString;

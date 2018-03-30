@@ -84,17 +84,23 @@ public class CSVParser {
 
 
     //Print all the courses in the list
-    public void printCourseList() {
-        List<CourseData> copiedList = new ArrayList(courseList);
+    public String printCourseList() {
+        StringBuilder builder = new StringBuilder();
+
         for(CourseData course: courseList) {
-            System.out.println(course.getSubject() + " " + course.getCourseNum());
+            builder.append(course.getSubject() + " " + course.getCourseNum() + "\n");
             for(ClassOffering classOffering: course.getClassOfferings()) {
-                System.out.println("\t" + classOffering.getSemNumber() + " in " + classOffering.getLocation() + " by " + classOffering.getInstructors());
+                builder.append("\t" + classOffering.getSemNumber() + " in "
+                        + classOffering.getLocation() + " by "
+                        + classOffering.getInstructors() + "\n");
                 for(Component component: classOffering.getComponents()) {
-                    System.out.println("\t\t" + "Type=" + component.getComponent() + ", Enrollment=" + component.getEnrollmentTotal() + "/" + component.getEnrollmentCap());
+                    builder.append("\t\t" + "Type=" + component.getComponent() + ", Enrollment="
+                            + component.getEnrollmentTotal() + "/"
+                            + component.getEnrollmentCap() + "\n");
                 }
             }
 
         }
+        return builder.toString();
     }
 }
