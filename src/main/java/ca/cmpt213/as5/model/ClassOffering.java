@@ -5,7 +5,7 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-public class ClassOffering {
+public class ClassOffering implements Comparable{
     private int semNumber;
     private String location;
     private List<String> instructors;
@@ -14,6 +14,11 @@ public class ClassOffering {
     private static final int SEM_FIELD = 0;
     private static final int LOCATION_FIELD = 1;
     private static final int NUM_OF_INSTRUCTORS = 2;
+
+    @Override
+    public int compareTo(ClassOffering other) {
+      return semNumber - other.semNumber;
+    }
 
     public ClassOffering(List<String> fields) {
         semNumber = parseInt(fields.get(SEM_FIELD));

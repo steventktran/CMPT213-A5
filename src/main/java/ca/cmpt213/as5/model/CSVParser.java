@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Collections;
 
 /**
  * This is the CSVParse class. It's responsibilities are to parse the given file
@@ -63,6 +64,14 @@ public class CSVParser {
             addToCourseList(courseToAdd, offeringToAdd, componentToAdd);
         }
         read.close();
+
+        for(CourseData course: courseList) {
+          List<ClassOffering> classes = course.getClassOfferings();
+          Collections.sort(classes);
+          for(Component component: classes.getComponents()) {
+            Collections.sort(component);
+          }
+        }
     }
 
     public void addToCourseList(CourseData courseToBeAdded, ClassOffering offeringToBeAdded, Component componentToBeAdded) {
