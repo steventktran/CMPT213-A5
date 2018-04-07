@@ -8,14 +8,14 @@ import static java.lang.Integer.parseInt;
  */
 
 
-public class Component implements Comparable{
+public class Component implements Comparable<Component>{
     private int enrollmentCap;
     private int enrollmentTotal;
     private String component;
 
     @Override
     public int compareTo(Component other) {
-      return component.compareTo(other.component);
+        return component.compareTo(other.component);
     }
 
     public Component(String[] fields) {

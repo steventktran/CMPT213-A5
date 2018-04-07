@@ -5,7 +5,7 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-public class ClassOffering implements Comparable{
+public class ClassOffering implements Comparable<ClassOffering>{
     private int semNumber;
     private String location;
     private List<String> instructors;
@@ -17,7 +17,7 @@ public class ClassOffering implements Comparable{
 
     @Override
     public int compareTo(ClassOffering other) {
-      return semNumber - other.semNumber;
+        return  semNumber - other.getSemNumber() ;
     }
 
     public ClassOffering(List<String> fields) {
@@ -91,4 +91,5 @@ public class ClassOffering implements Comparable{
         //If not a duplicate component, add to components list
         components.add(tobeAdded);
     }
+
 }
