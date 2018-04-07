@@ -10,15 +10,19 @@ import static java.lang.Integer.*;
  * parse and store the information the CSVParse gives it
  */
 
-public class CourseData {
+public class CourseData implements Comparable<CourseData>{
     private String subject;
     private String courseNum;
     private List<ClassOffering> classOfferings;
 
-
     //Avoiding magic numbers
     private static final int SUBJECT_FIELD = 0;
     private static final int COURSE_FIELD = 1;
+
+    @Override
+    public int compareTo(CourseData other) {
+      return subject.compareTo(other.subject);
+    }
 
     public CourseData(List<String> fields) {
         subject = fields.get(SUBJECT_FIELD).trim();
