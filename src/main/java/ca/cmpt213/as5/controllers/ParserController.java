@@ -23,7 +23,7 @@ public class ParserController {
 
 
     //Get Mapping
-    @GetMapping("/dump-model")
+    @GetMapping("/api/dump-model")
     public String getDumpModel() throws FileNotFoundException{
         File filePath = new File(FILE_PATH);
         CSVParser theParser = new CSVParser(filePath);
@@ -40,6 +40,11 @@ public class ParserController {
 
     }
 
-    //
+    //Get Mapping for about
+    @GetMapping("/api/about")
+    public String getAboutMessage() {
+        return "Suberb Course game written by Andy Wu!";
+    }
+
 
 }
