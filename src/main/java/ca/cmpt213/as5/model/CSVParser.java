@@ -68,8 +68,8 @@ public class CSVParser {
         for(CourseData course: courseList) {
           List<ClassOffering> classes = course.getClassOfferings();
           Collections.sort(classes);
-          for(Component component: classes.getComponents()) {
-            Collections.sort(component);
+          for(ClassOffering offering: classes {
+            Collections.sort(offering.getComponents());
           }
         }
     }
