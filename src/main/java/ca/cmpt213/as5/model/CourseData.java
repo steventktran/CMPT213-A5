@@ -21,6 +21,9 @@ public class CourseData implements Comparable<CourseData>{
 
     @Override
     public int compareTo(CourseData other) {
+      if(subject.equals(other.subject)) {
+          return courseNum.compareTo(other.courseNum);
+      }
       return subject.compareTo(other.subject);
     }
 
