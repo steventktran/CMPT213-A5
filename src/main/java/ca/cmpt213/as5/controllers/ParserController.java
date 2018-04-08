@@ -1,11 +1,13 @@
 package ca.cmpt213.as5.controllers;
 
+import ca.cmpt213.as5.exceptions.DepartmentNotFoundException;
 import ca.cmpt213.as5.model.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -85,6 +87,61 @@ public class ParserController {
                 .getOfferingList()
                 .get(offeringID)
                 .getComponentList();
+    }
+
+
+
+    @PostMapping("/api/addoffering")
+    public void addOffering(@RequestBody int semesterCode,
+                            @RequestBody String subjectName,
+                            @RequestBody String catalogNumber,
+                            @RequestBody String location,
+                            @RequestBody int enrollmentCap,
+                            @RequestBody String component,
+                            @RequestBody int enrollmentTotal,
+                            @RequestBody String instructor) throws DepartmentNotFoundException {
+        boolean foundDepartment = false;
+
+        for(Department department : getDepartments()) {
+            if(department.getName().equals(subjectName)) {
+                foundDepartment = true;
+                Course newCourse = new Course(catalogNumber);
+                newCourse.setCourseId(department.getCourseList().size());
+
+                //Create an list of strings for fields to avoid creating a new constructor
+                List<String> courseComponentFields = new ArrayList<>();
+                courseComponentFields.add("" + enrollmentCap);
+                courseComponentFields.add("" + enrollmentTotal);
+                courseComponentFields.add(component);
+
+                Component courseComponent = new Component(courseComponentFields);
+
+                //Create an list of strings for fields to avoid creating a new constructor
+                List<String> offeringFields = new ArrayList<>();
+                offeringFields.add("" + semesterCode);
+                offeringFields.add(location);
+                offeringFields.add(instructor);
+
+                Offering newOffering = new Offering(offeringFields);
+
+                department.addToCourseList(newCourse, newOffering, courseComponent);
+            }
+        }
+
+        if(!foundDepartment) {
+            throw new DepartmentNotFoundException();
+        }
+    }
+
+
+
+
+    //Handle Exception for when the department cannot be found
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST,
+            reason = "Department cannot be found.")
+    @ExceptionHandler(DepartmentNotFoundException.class)
+    public void departmentNotFoundExceptionHandler() {
+
     }
 
 

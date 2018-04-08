@@ -19,6 +19,7 @@ public class Offering implements Comparable<Offering>{
         return semesterCode - other.semesterCode;
     }
 
+
     public Offering(List<String> fields) {
         //to be completed
         location = fields.get(0).trim();
