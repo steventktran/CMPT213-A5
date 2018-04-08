@@ -1,5 +1,7 @@
 package ca.cmpt213.as5.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class Course implements Comparable<Course>{
         this.catalogNumber = catalogNumber;
     }
 
+    @JsonIgnore
     public List<Offering> getOfferingList() {
         return offeringList;
     }
@@ -48,13 +51,16 @@ public class Course implements Comparable<Course>{
                     && offering.getSemesterCode() == newOffering.getSemesterCode()) {
 
                 //Check to see if only instructors were missing; if so, add missing instructors to list of instructors
-                if(!offering.getInstructorList().equals(newOffering.getInstructorList())) {
-                    offering.addInstructor(newOffering.getInstructorList());
-                    return;
-                } else {
-                    offering.addToComponentList((newComponent));
-                    return;
-                }
+//                if(!offering.getInstructorList().equals(newOffering.getInstructorList())) {
+//                    offering.addInstructor(newOffering.getInstructorList());
+//                    return;
+//                } else {
+//                    offering.addToComponentList((newComponent));
+//                    return;
+//                }
+
+                offering.addToComponentList((newComponent));
+                return;
             }
         }
         //If not duplicate, add to course list

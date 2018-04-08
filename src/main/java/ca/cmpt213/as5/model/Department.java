@@ -1,5 +1,7 @@
 package ca.cmpt213.as5.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -18,6 +20,7 @@ public class Department implements Comparable<Department>{
         this.name = name.trim();
     }
 
+    @JsonIgnore
     public List<Course> getCourseList() {
         return courseList;
     }

@@ -19,8 +19,28 @@ public class CSVParser {
     private static final int ENROLLMENT_TOTAL_INDEX = 5;
     private static final int INSTRUCTOR_INDEX = 6;
 
+    public CSVParser() throws FileNotFoundException{
+        this.parseFile();
+    }
 
-    public CSVParser(File file) {
+    public CSVParser(File file) throws FileNotFoundException{
+        this.file = file;
+        this.parseFile();
+    }
+
+    public List<Department> getDepartments() {
+        return departments;
+    }
+
+    public void setDepartments(List<Department> departments) {
+        this.departments = departments;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
         this.file = file;
     }
 

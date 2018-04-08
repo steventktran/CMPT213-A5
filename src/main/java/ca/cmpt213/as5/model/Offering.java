@@ -1,5 +1,7 @@
 package ca.cmpt213.as5.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,13 +89,12 @@ public class Offering implements Comparable<Offering>{
     }
 
     public void addInstructor(List<String> instructorList) {
-        for(String instructor: instructors) {
-            for(String newInstructor: instructorList) {
-                if(!instructor.equals(newInstructor)) {
-                    instructors.add(newInstructor);
-                }
+        for(String newInstructor: instructorList) {
+            if(!instructors.contains(newInstructor)) {
+                instructors.add(newInstructor);
             }
         }
+
     }
 
     public String getTerm() {
@@ -120,6 +121,7 @@ public class Offering implements Comparable<Offering>{
         this.year = year;
     }
 
+    @JsonIgnore
     public List<Component> getComponentList() {
         return componentList;
     }
