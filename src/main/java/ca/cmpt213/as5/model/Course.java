@@ -5,10 +5,28 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Course implements Comparable<Course>{
+public class Course implements Comparable<Course>, Observable{
     private long courseId;
     private String catalogNumber;
     private List<Offering> offeringList = new ArrayList<>();
+    private List<Observer> listOfObservers = new ArrayList<>();
+
+    @Override
+    public void add(Observer observer) {
+        listOfObservers.add(observer);
+    }
+
+    @Override
+    public void delete(Observer observer) {
+        listOfObservers.remove(observer);
+    }
+
+    @Override
+    public void notifyAddObservers(Offering newOffering, Component newComponent) {
+        for(Observer observer : listOfObservers) {
+            observer.addUpdate(newOffering, newComponent);
+        }
+    }
 
     @Override
     public int compareTo(Course other) {
@@ -68,4 +86,5 @@ public class Course implements Comparable<Course>{
         newOffering.addToComponentList(newComponent);
         offeringList.add(newOffering);
     }
+
 }

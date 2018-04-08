@@ -13,12 +13,12 @@ public class Offering implements Comparable<Offering>{
     private int semesterCode;
     private int year;
     private List<Component> componentList = new ArrayList<>();
+    private List<Observer> observerList;
 
     @Override
     public int compareTo(Offering other) {
         return semesterCode - other.semesterCode;
     }
-
 
     public Offering(List<String> fields) {
         //to be completed
@@ -143,4 +143,5 @@ public class Offering implements Comparable<Offering>{
         //If not a duplicate component, add to components list
         componentList.add(newComponent);
     }
+
 }

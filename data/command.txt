@@ -1,3 +1,22 @@
 curl -i -H "Content-Type: application/json" -X GET localhost:8080/api/dump-model
 curl -i -s -H "Content-Type: application/json" -X GET localhost:8080/api/departments
 curl -i -s -H 'Content-Type: application/json' -X GET localhost:8080/api/departments/2/courses
+
+#Offering Curl Commands
+curl -i -s -H 'Content-Type: application/json' -X POST -d '{
+        "semester": 1191,
+        "subjectName": "ABCD",
+        "catalogNumber": 101,
+        "location": "Vancouver",
+        "enrollmentCap": 123,
+        "component": "LEC",
+        "enrollmentTotal": 110,
+        "instructor": "Mystery Instructor"
+    }' localhost:8080/api/addoffering
+
+
+
+
+#Watcher Curl Commands
+curl -i -s -H 'Content-Type: application/json' -X GET localhost:8080/api/watchers
+curl -i -s -H 'Content-Type: application/json' -X POST -d '{"deptId": 2,"courseId": 103}' localhost:8080/api/watchers
