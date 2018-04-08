@@ -1,6 +1,4 @@
-package ca.cmpt213.as5.model;
-
-import java.util.List;
+package ca.cmpt213.as5.model.oldmodel;
 
 import static java.lang.Integer.parseInt;
 
@@ -20,10 +18,10 @@ public class Component implements Comparable<Component>{
         return component.compareTo(other.component);
     }
 
-    public Component(List<String> fields) {
-        enrollmentCap = parseInt(fields.get(0));
-        enrollmentTotal = parseInt(fields.get(1));
-        component = fields.get(2).trim();
+    public Component(String[] fields) {
+        enrollmentCap = parseInt(fields[0]);
+        enrollmentTotal = parseInt(fields[1]);
+        component = fields[2].trim();
     }
 
     public String getComponent() {

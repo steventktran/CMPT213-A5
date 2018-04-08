@@ -1,9 +1,7 @@
-package ca.cmpt213.as5.model;
+package ca.cmpt213.as5.model.oldmodel;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.Integer.*;
 
 /**
  * This is the course data class. It's responsibilities are to

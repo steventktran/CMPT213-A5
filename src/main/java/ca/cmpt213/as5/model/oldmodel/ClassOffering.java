@@ -1,4 +1,4 @@
-package ca.cmpt213.as5.model;
+package ca.cmpt213.as5.model.oldmodel;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,6 @@
 package ca.cmpt213.as5.controllers;
 
 import ca.cmpt213.as5.model.CSVParser;
-import ca.cmpt213.as5.model.CourseData;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 
 /**
  * The controller class that utilizes the parse object and outputs it to the

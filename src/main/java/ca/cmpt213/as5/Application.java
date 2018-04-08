@@ -1,12 +1,7 @@
 package ca.cmpt213.as5;
 
-import ca.cmpt213.as5.controllers.ParserController;
-import ca.cmpt213.as5.model.CSVParser;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.io.File;
-import java.io.FileNotFoundException;
 
 @SpringBootApplication
 public class Application {
