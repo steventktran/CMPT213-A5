@@ -97,7 +97,7 @@ public class ParserController {
         List<EnrollmentData> enrollmentData = new ArrayList<>();
         for(int i = theParser.getFirstSemesterCode(); i < theParser.getLastSemesterCode(); i++) {
             if(i%10 == 1 || i%10 == 4 || i%10 == 7) {
-                enrollmentData.add(new EnrollmentData(i, getDepartments().get(deptId)));
+                enrollmentData.add(new EnrollmentData(i, theParser.getDepartment(deptId)));
             }
         }
         return enrollmentData;

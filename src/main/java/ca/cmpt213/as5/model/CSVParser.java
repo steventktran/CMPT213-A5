@@ -129,9 +129,6 @@ public class CSVParser implements Iterable<Department>{
             Component component = new Component(componentFields);
 
             addToCourseList(department, course, offering, component);
-
-            System.out.println(courseId.get());
-            System.out.println(courseOfferingId.get());
         }
         read.close();
         sort();

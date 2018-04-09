@@ -16,8 +16,8 @@ public class EnrollmentData implements Comparable<EnrollmentData>{
     public EnrollmentData(int semesterCode, Department department) {
         this.semesterCode = semesterCode;
 
-        for(Course course: department.getCourseList()) {
-            for(Offering offering: course.getOfferingList()) {
+        for(Course course: department) {
+            for(Offering offering: course) {
                 if(offering.getSemesterCode() == semesterCode) {
                     totalCoursesTaken += getEnrolledToLec(offering);
                 }
@@ -27,7 +27,7 @@ public class EnrollmentData implements Comparable<EnrollmentData>{
 
     public int getEnrolledToLec(Offering offering) {
         int enrollment = 0;
-        for(Component component: offering.getComponentList()) {
+        for(Component component: offering) {
             if(component.getComponent().equals("LEC")) {
                 enrollment += component.getEnrollmentTotal();
             }
