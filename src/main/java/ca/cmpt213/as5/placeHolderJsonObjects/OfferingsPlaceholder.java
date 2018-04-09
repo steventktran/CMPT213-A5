@@ -2,7 +2,7 @@ package ca.cmpt213.as5.placeHolderJsonObjects;
 
 //Pojo Object.
 public class OfferingsPlaceholder {
-    public int semesterCode;
+    public int semester;
     public String subjectName;
     public String catalogNumber;
     public String location;
@@ -15,12 +15,14 @@ public class OfferingsPlaceholder {
 
     }
 
+
+
     public int getSemesterCode() {
-        return semesterCode;
+        return semester;
     }
 
-    public void setSemesterCode(int semesterCode) {
-        this.semesterCode = semesterCode;
+    public void setSemesterCode(int semester) {
+        this.semester = semester;
     }
 
     public String getSubjectName() {
