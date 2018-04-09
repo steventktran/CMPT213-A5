@@ -39,8 +39,8 @@ public class ParserController {
 
     //Get Mapping
     @GetMapping("/api/dump-model")
-    public String getDumpModel() throws FileNotFoundException{
-        return theParser.printCourseList();
+    public void getDumpModel() throws FileNotFoundException{
+        System.out.println(theParser.printCourseList());
     }
 
     //Handles a file not found exception.
@@ -96,7 +96,16 @@ public class ParserController {
                 .getComponentList();
     }
 
-//    @GetMapping("/api/stats/students-per-semester?")
+    @GetMapping("/api/stats/students-per-semester")
+    public List<EnrollmentData> getEnrollmentList(@RequestParam int deptId) {
+        List<EnrollmentData> enrollmentData = new ArrayList<>();
+        for(int i = theParser.getFirstSemesterCode(); i < theParser.getLastSemesterCode(); i++) {
+            if(i%10 == 1 || i%10 == 4 || i%10 == 7) {
+                enrollmentData.add(new EnrollmentData(i, getDepartments().get(deptId)));
+            }
+        }
+        return enrollmentData;
+    }
 
 
     @PostMapping("/api/addoffering")

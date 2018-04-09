@@ -28,6 +28,10 @@ public class CSVParser {
         this.parseFile();
     }
 
+    public Department getDepartment(int deptId) {
+        return departments.get(deptId);
+    }
+
     public List<Department> getDepartments() {
         return departments;
     }
@@ -42,6 +46,32 @@ public class CSVParser {
 
     public void setFile(File file) {
         this.file = file;
+    }
+
+    public int getFirstSemesterCode() {
+        int firstSemester = 0;
+        for(Department department: departments) {
+            for(Course course: department.getCourseList()) {
+                int semesterCode = course.getOfferingList().get(0).getSemesterCode();
+                if(semesterCode < firstSemester || firstSemester == 0) {
+                    firstSemester = semesterCode;
+                }
+            }
+        }
+        return firstSemester;
+    }
+
+    public int getLastSemesterCode() {
+        int lastSemester = 0;
+        for(Department department: departments) {
+            for(Course course: department.getCourseList()) {
+                int semesterCode = course.getOfferingList().get(course.getOfferingList().size() - 1).getSemesterCode();
+                if(semesterCode > lastSemester) {
+                    lastSemester = semesterCode;
+                }
+            }
+        }
+        return lastSemester;
     }
 
     public void parseFile() throws FileNotFoundException {

@@ -4,16 +4,16 @@ package ca.cmpt213.as5.model;
  * It stores the data necessary to create a graph.
  */
 
-public class Enrollment implements Comparable<Enrollment>{
+public class EnrollmentData implements Comparable<EnrollmentData>{
     private int semesterCode;
     private int totalCoursesTaken;
 
     @Override
-    public int compareTo( Enrollment other) {
+    public int compareTo( EnrollmentData other) {
         return semesterCode - other.semesterCode;
     }
 
-    public Enrollment(int semesterCode, Department department) {
+    public EnrollmentData(int semesterCode, Department department) {
         this.semesterCode = semesterCode;
 
         for(Course course: department.getCourseList()) {
