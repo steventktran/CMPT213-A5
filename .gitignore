@@ -1,3 +1,15 @@
 
 \.idea/workspace\.xml
 \.idea/misc\.xml
+
+out/production/classes/ca/cmpt213/as5/controllers/ParserController\.class
+
+out/production/classes/ca/cmpt213/as5/model/About\.class
+
+out/production/classes/ca/cmpt213/as5/model/Department\.class
+
+out/production/classes/ca/cmpt213/as5/model/Graph\.class
+
+out/production/classes/ca/cmpt213/as5/model/Offering\.class
+
+out/production/classes/ca/cmpt213/as5/placeHolderJsonObjects/OfferingsPlaceholder\.class

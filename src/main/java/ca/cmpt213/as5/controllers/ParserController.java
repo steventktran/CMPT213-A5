@@ -109,14 +109,15 @@ public class ParserController {
 
 
     @PostMapping("/api/addoffering")
-    public void addOffering(@RequestBody OfferingsPlaceholder placeholder) throws DepartmentNotFoundException {
+    public void addOffering(@RequestBody OfferingsPlaceholder placeholder) {
         boolean foundDepartment = false;
+
+        System.out.println(placeholder.toString());
 
         for(Department department : theParser.getDepartments()) {
             if(department.getName().equals(placeholder.subjectName)) {
                 foundDepartment = true;
                 utilityHelpOfferingMethod(placeholder, department);
-
             }
         }
 
@@ -144,12 +145,16 @@ public class ParserController {
         //Create an list of strings for fields to avoid creating a new constructor
         List<String> offeringFields = new ArrayList<>();
         offeringFields.add(placeholder.location);
-        offeringFields.add("" + placeholder.semesterCode);
         offeringFields.add(placeholder.instructor);
+        offeringFields.add("" + placeholder.semester);
 
         Offering newOffering = new Offering(offeringFields);
 
-        newCourse.notifyAddObservers(newOffering, courseComponent);
+        for(Course course : department.getCourseList()) {
+            if(course.getCatalogNumber().equals(placeholder.catalogNumber)) {
+                course.notifyAddObservers(newOffering, courseComponent);
+            }
+        }
 
         department.addToCourseList(newCourse, newOffering, courseComponent);
     }
@@ -167,7 +172,6 @@ public class ParserController {
     public void addWatcher(@RequestBody WatcherPlaceholder placeholder) throws CourseNotFoundException, DepartmentNotFoundException {
 
         Watcher watcher = new Watcher(nextWatcherID.incrementAndGet(), placeholder.deptId, placeholder.courseId, theParser);
-
 
         boolean foundDepartment = false;
         boolean foundCourse = false;
