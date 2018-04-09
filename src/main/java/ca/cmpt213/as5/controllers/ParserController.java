@@ -96,6 +96,7 @@ public class ParserController {
                 .getComponentList();
     }
 
+//    @GetMapping("/api/stats/students-per-semester?")
 
 
     @PostMapping("/api/addoffering")
