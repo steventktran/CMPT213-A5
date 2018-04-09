@@ -3,9 +3,10 @@ package ca.cmpt213.as5.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Department implements Comparable<Department>{
+public class Department implements Comparable<Department>, Iterable<Course>{
     private long deptId;
     private String name;
     private List<Course> courseList = new ArrayList<>();
@@ -13,6 +14,11 @@ public class Department implements Comparable<Department>{
     @Override
     public int compareTo(Department other) {
         return name.compareTo(other.name);
+    }
+
+    @Override
+    public Iterator<Course> iterator() {
+        return courseList.iterator();
     }
 
     public Department() { }
@@ -23,6 +29,15 @@ public class Department implements Comparable<Department>{
     @JsonIgnore
     public List<Course> getCourseList() {
         return courseList;
+    }
+
+    public Course getCourse(long courseId) {
+        for(Course course: courseList) {
+            if(course.getCourseId() == courseId) {
+                return course;
+            }
+        }
+        return null;
     }
 
     public void setCourseList(List<Course> courseList) {
@@ -54,7 +69,6 @@ public class Department implements Comparable<Department>{
             }
         }
         //If not duplicate, add to course list
-        newCourse.setCourseId(courseList.size());
         newCourse.addToOfferingList(newOffering, newComponent);
         courseList.add(newCourse);
     }

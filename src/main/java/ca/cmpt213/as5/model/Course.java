@@ -3,9 +3,10 @@ package ca.cmpt213.as5.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Course implements Comparable<Course>, Observable{
+public class Course implements Comparable<Course>, Iterable<Offering>, Observable{
     private long courseId;
     private String catalogNumber;
     private List<Offering> offeringList = new ArrayList<>();
@@ -33,10 +34,25 @@ public class Course implements Comparable<Course>, Observable{
         return catalogNumber.compareTo(other.catalogNumber);
     }
 
+    @Override
+    public Iterator<Offering> iterator() {
+        return offeringList.iterator();
+    }
+
     public Course() { }
 
-    public Course(String catalogNumber) {
+    public Course(String catalogNumber, long courseId) {
         this.catalogNumber = catalogNumber.trim();
+        this.courseId = courseId;
+    }
+
+    public Offering getOffering(long courseOfferingId) {
+        for(Offering offering: offeringList) {
+            if(offering.getCourseOfferingId() == courseOfferingId) {
+                return offering;
+            }
+        }
+        return null;
     }
 
     public long getCourseId() {

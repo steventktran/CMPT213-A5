@@ -66,8 +66,7 @@ public class ParserController {
     //Get mapping for a list of courses
     @GetMapping("/api/departments/{id}/courses")
     public List<Course> getCourses(@PathVariable("id") int deptID) {
-        return theParser.getDepartments()
-                .get(deptID)
+        return theParser.getDepartment(deptID)
                 .getCourseList();
     }
 
@@ -77,10 +76,8 @@ public class ParserController {
                                        @PathVariable("cId") int courseID) {
 
 
-        return theParser.getDepartments()
-                .get(deptID)
-                .getCourseList()
-                .get(courseID)
+        return theParser.getDepartment(deptID)
+                .getCourse(courseID)
                 .getOfferingList();
     }
 
@@ -89,12 +86,9 @@ public class ParserController {
     public List<Component> getOfferings(@PathVariable("dId") int deptID,
                                        @PathVariable("cId") int courseID,
                                        @PathVariable("oId") int offeringID) {
-        return theParser.getDepartments()
-                .get(deptID)
-                .getCourseList()
-                .get(courseID)
-                .getOfferingList()
-                .get(offeringID)
+        return theParser.getDepartment(deptID)
+                .getCourse(courseID)
+                .getOffering(offeringID)
                 .getComponentList();
     }
 
@@ -116,7 +110,7 @@ public class ParserController {
         Department placeholderDepartment = new Department();
 
 
-        for(Department department : theParser.getDepartments()) {
+        for(Department department : theParser) {
             if(department.getName().equals(placeholder.subjectName)) {
                 foundDepartment = true;
                 placeholderDepartment = department;
@@ -136,7 +130,7 @@ public class ParserController {
     }
 
     private void utilityHelpOfferingMethod(OfferingsPlaceholder placeholder, Department department) {
-        Course newCourse = new Course(placeholder.catalogNumber);
+        Course newCourse = new Course(placeholder.catalogNumber, theParser.incrementAndGetCourseId());
 
         //Create an list of strings for fields to avoid creating a new constructor
         List<String> courseComponentFields = new ArrayList<>();
@@ -152,7 +146,7 @@ public class ParserController {
         offeringFields.add(placeholder.instructor);
         offeringFields.add("" + placeholder.semester);
 
-        Offering newOffering = new Offering(offeringFields);
+        Offering newOffering = new Offering(offeringFields, theParser.incrementAndGetOfferingId());
 
         newOffering.addToComponentList(courseComponent);
 
@@ -188,7 +182,7 @@ public class ParserController {
         boolean foundCourse = false;
 
 
-        for(Department department : theParser.getDepartments()) {
+        for(Department department : theParser) {
             if(department.getDeptId() == placeholder.deptId) {
                 foundDepartment = true;
 

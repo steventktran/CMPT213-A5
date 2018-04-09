@@ -2,12 +2,10 @@ package ca.cmpt213.as5.model;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
-public class CSVParser {
+public class CSVParser implements Iterable<Department>{
     private List<Department> departments = new ArrayList<>();
     private File file;
 
@@ -19,6 +17,14 @@ public class CSVParser {
     private static final int ENROLLMENT_TOTAL_INDEX = 5;
     private static final int INSTRUCTOR_INDEX = 6;
 
+    private AtomicLong courseId = new AtomicLong();
+    private AtomicLong courseOfferingId = new AtomicLong();
+
+    @Override
+    public Iterator<Department> iterator() {
+        return departments.iterator();
+    }
+
     public CSVParser() throws FileNotFoundException{
         this.parseFile();
     }
@@ -29,11 +35,32 @@ public class CSVParser {
     }
 
     public Department getDepartment(int deptId) {
-        return departments.get(deptId);
+        for(Department department: departments) {
+            if(department.getDeptId() == deptId) {
+                return department;
+            }
+        }
+        return null;
     }
 
     public List<Department> getDepartments() {
         return departments;
+    }
+
+    public long getCourseId() {
+        return courseId.get();
+    }
+
+    public long incrementAndGetCourseId() {
+        return courseId.incrementAndGet();
+    }
+
+    public long getCourseOfferingId() {
+        return courseOfferingId.get();
+    }
+
+    public long incrementAndGetOfferingId() {
+        return courseOfferingId.incrementAndGet();
     }
 
     public void setDepartments(List<Department> departments) {
@@ -51,7 +78,7 @@ public class CSVParser {
     public int getFirstSemesterCode() {
         int firstSemester = 0;
         for(Department department: departments) {
-            for(Course course: department.getCourseList()) {
+            for(Course course: department) {
                 int semesterCode = course.getOfferingList().get(0).getSemesterCode();
                 if(semesterCode < firstSemester || firstSemester == 0) {
                     firstSemester = semesterCode;
@@ -64,7 +91,7 @@ public class CSVParser {
     public int getLastSemesterCode() {
         int lastSemester = 0;
         for(Department department: departments) {
-            for(Course course: department.getCourseList()) {
+            for(Course course: department) {
                 int semesterCode = course.getOfferingList().get(course.getOfferingList().size() - 1).getSemesterCode();
                 if(semesterCode > lastSemester) {
                     lastSemester = semesterCode;
@@ -76,7 +103,6 @@ public class CSVParser {
 
     public void parseFile() throws FileNotFoundException {
         Scanner read = new Scanner(file);
-
         //Headers is never used because it's sole purpose is to skip the header of the CSVFile
         read.nextLine();
 
@@ -98,11 +124,14 @@ public class CSVParser {
             componentFields.add(fields[fields.length - 1]);
 
             Department department = new Department(fields[DEPARTMENT_INDEX]);
-            Course course = new Course(fields[COURSE_NUMBER_INDEX]);
-            Offering offering = new Offering(courseOfferingFields);
+            Course course = new Course(fields[COURSE_NUMBER_INDEX], courseId.incrementAndGet());
+            Offering offering = new Offering(courseOfferingFields, courseOfferingId.incrementAndGet());
             Component component = new Component(componentFields);
 
             addToCourseList(department, course, offering, component);
+
+            System.out.println(courseId.get());
+            System.out.println(courseOfferingId.get());
         }
         read.close();
         sort();
@@ -112,9 +141,9 @@ public class CSVParser {
         Collections.sort(departments);
         for(Department department: departments) {
             Collections.sort(department.getCourseList());
-            for(Course course: department.getCourseList()) {
+            for(Course course: department) {
                 Collections.sort(course.getOfferingList());
-                for(Offering offering: course.getOfferingList()) {
+                for(Offering offering: course) {
                     Collections.sort(offering.getComponentList());
                 }
             }
@@ -139,12 +168,12 @@ public class CSVParser {
         StringBuilder builder = new StringBuilder();
 
         for(Department department: departments) {
-            for(Course course: department.getCourseList()) {
+            for(Course course: department) {
                 builder.append(department.getName() + " " + course.getCatalogNumber() + "\n");
-                for(Offering offering: course.getOfferingList()) {
+                for(Offering offering: course) {
                     builder.append("\t" + offering.getSemesterCode() + " in "
                             + offering.getLocation() + " by " + offering.getInstructors() + "\n");
-                    for(Component component: offering.getComponentList()) {
+                    for(Component component: offering) {
                         builder.append("\t\t" + "Type=" + component.getComponent() + ", Enrollment="
                                 + component.getEnrollmentTotal() + "/"
                                 + component.getEnrollmentCap() + "\n");

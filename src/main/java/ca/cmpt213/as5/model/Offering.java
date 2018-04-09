@@ -3,9 +3,10 @@ package ca.cmpt213.as5.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class Offering implements Comparable<Offering>{
+public class Offering implements Comparable<Offering>, Iterable<Component>{
     private long courseOfferingId;
     private String location;
     private List<String> instructors = new ArrayList<>();
@@ -19,7 +20,12 @@ public class Offering implements Comparable<Offering>{
         return semesterCode - other.semesterCode;
     }
 
-    public Offering(List<String> fields) {
+    @Override
+    public Iterator<Component> iterator() {
+        return componentList.iterator();
+    }
+
+    public Offering(List<String> fields, long courseOfferingId) {
         location = fields.get(0).trim();
         for(int i = 1; i < fields.size() - 1; i++) {
             instructors.add(fields.get(i).replace("\"", " ").trim());
@@ -40,7 +46,7 @@ public class Offering implements Comparable<Offering>{
         }
         semesterCode = Integer.parseInt(semesterField);
 
-
+        this.courseOfferingId = courseOfferingId;
     }
 
     public long getCourseOfferingId() {
