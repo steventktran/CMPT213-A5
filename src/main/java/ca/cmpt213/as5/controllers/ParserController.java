@@ -133,8 +133,8 @@ public class ParserController {
 
         //Create an list of strings for fields to avoid creating a new constructor
         List<String> offeringFields = new ArrayList<>();
-        offeringFields.add("" + placeholder.semesterCode);
         offeringFields.add(placeholder.location);
+        offeringFields.add("" + placeholder.semesterCode);
         offeringFields.add(placeholder.instructor);
 
         Offering newOffering = new Offering(offeringFields);
