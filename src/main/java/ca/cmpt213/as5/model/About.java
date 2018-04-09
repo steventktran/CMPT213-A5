@@ -1,27 +1,27 @@
 package ca.cmpt213.as5.model;
 
 public class About {
-    private String name;
-    private String description;
+    private String appName;
+    private String authorName;
 
     public About() {
-        this.name = "Andy Wu, Steven Tran";
-        this.description = "Welcome to the Course Manager";
+        this.appName = "Our Course Manager";
+        this.authorName = "Andy Wu, Steven Tran";
     }
 
-    public String getName() {
-        return name;
+    public String getAppName() {
+        return appName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAuthorName() {
+        return authorName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 }

@@ -16,6 +16,7 @@ public class Department implements Comparable<Department>{
         return name.compareTo(other.name);
     }
 
+    public Department() { }
     public Department(String name) {
         this.name = name.trim();
     }

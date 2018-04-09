@@ -21,7 +21,6 @@ public class Offering implements Comparable<Offering>{
     }
 
     public Offering(List<String> fields) {
-        //to be completed
         location = fields.get(0).trim();
         for(int i = 1; i < fields.size() - 1; i++) {
             instructors.add(fields.get(i).replace("\"", " ").trim());
