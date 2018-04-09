@@ -111,15 +111,19 @@ public class ParserController {
     @PostMapping("/api/addoffering")
     public void addOffering(@RequestBody OfferingsPlaceholder placeholder) {
         boolean foundDepartment = false;
+        Department placeholderDepartment = new Department();
 
-        System.out.println(placeholder.toString());
 
         for(Department department : theParser.getDepartments()) {
             if(department.getName().equals(placeholder.subjectName)) {
                 foundDepartment = true;
-                utilityHelpOfferingMethod(placeholder, department);
+                placeholderDepartment = department;
+                break;
             }
         }
+
+        utilityHelpOfferingMethod(placeholder, placeholderDepartment);
+
 
         if(!foundDepartment) {
             Department newDepartment = new Department(placeholder.subjectName);
@@ -131,8 +135,6 @@ public class ParserController {
 
     private void utilityHelpOfferingMethod(@RequestBody OfferingsPlaceholder placeholder, Department department) {
         Course newCourse = new Course(placeholder.catalogNumber);
-        newCourse.setCourseId(department.getCourseList().size());
-
 
         //Create an list of strings for fields to avoid creating a new constructor
         List<String> courseComponentFields = new ArrayList<>();
@@ -150,13 +152,18 @@ public class ParserController {
 
         Offering newOffering = new Offering(offeringFields);
 
+        newOffering.addToComponentList(courseComponent);
+
         for(Course course : department.getCourseList()) {
             if(course.getCatalogNumber().equals(placeholder.catalogNumber)) {
                 course.notifyAddObservers(newOffering, courseComponent);
             }
         }
 
-        department.addToCourseList(newCourse, newOffering, courseComponent);
+        theParser.addToCourseList(department, newCourse, newOffering, courseComponent);
+        newCourse.setCourseId(department.getCourseList().size());
+        theParser.sort();
+
     }
 
 
@@ -169,7 +176,7 @@ public class ParserController {
 
     //Adds a watcher to the list, Notifies the course that there is an observer.
     @PostMapping("/api/watchers")
-    public void addWatcher(@RequestBody WatcherPlaceholder placeholder) throws CourseNotFoundException, DepartmentNotFoundException {
+    public Watcher addWatcher(@RequestBody WatcherPlaceholder placeholder) throws CourseNotFoundException, DepartmentNotFoundException {
 
         Watcher watcher = new Watcher(nextWatcherID.incrementAndGet(), placeholder.deptId, placeholder.courseId, theParser);
 
@@ -184,7 +191,7 @@ public class ParserController {
                 for(Course course: department.getCourseList()) {
                     if(course.getCourseId() == placeholder.courseId) {
                         foundCourse = true;
-                        course.add(watcher);
+                        course.addObserver(watcher);
                         listOfWatchers.add(watcher);
                     }
                 }
@@ -198,6 +205,8 @@ public class ParserController {
         if(!foundCourse) {
             throw new CourseNotFoundException();
         }
+
+        return watcher;
     }
 
     @GetMapping("/api/watchers/{id}")
@@ -216,29 +225,43 @@ public class ParserController {
 
         boolean foundWatcher = false;
 
+        Course seekingCourse = new Course();
+        Watcher seekingWatcher = new Watcher();
+
         for(Watcher watcher : listOfWatchers) {
+
             if(watcher.getWatcherID() == watcherID) {
                 foundWatcher = true;
+                seekingWatcher = watcher;
+
                 //1. We have to remove the observer from the course list.
                 for(Department department : theParser.getDepartments()) {
                     //It's impossible to get a course not found or a department not found because the watcher
                     //Must be in the list somewhere.
                     if(department == watcher.getDepartment()) {
+                        //After finding the specified department the watcher was looking at
+                        //Iterate through the course list and find the correct course.
+
                         for(Course course: department.getCourseList()) {
                             if(course.getCourseId() == watcher.getCourse().getCourseId()) {
-                                course.delete(watcher);
-                                listOfWatchers.remove(watcher);
+                                seekingCourse = course;
+                                break;
                             }
                         }
+                        break;
                     }
                 }
 
+                break;
             }
         }
 
         if(!foundWatcher) {
             throw new WatcherNotFoundException();
         }
+
+        seekingCourse.deleteObserver(seekingWatcher);
+        listOfWatchers.remove(seekingWatcher);
     }
 
 

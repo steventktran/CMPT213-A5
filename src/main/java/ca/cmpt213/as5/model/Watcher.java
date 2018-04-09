@@ -5,6 +5,7 @@ import ca.cmpt213.as5.exceptions.DepartmentNotFoundException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -14,8 +15,8 @@ public class Watcher implements Observer{
     private Department department;
     //Course if our observable...
     private Course course;
-    private String[] events;
-    private int arrayIndex = 0;
+    private List<String> events = new ArrayList<>();
+
 
     @Override
     public void addUpdate(Offering newOffering, Component newComponent) {
@@ -31,8 +32,7 @@ public class Watcher implements Observer{
                                 + " (" + enrollmentTotal + " / " + enrollmentCap + ") "
                                 + "to offering " + term + " " + year + ".";
 
-        events[arrayIndex] = eventMessage;
-        arrayIndex++;
+        events.add(eventMessage);
     }
 
 
@@ -64,7 +64,9 @@ public class Watcher implements Observer{
 
     }
 
-    public String[] getEvents() {
+    public Watcher(){ };
+
+    public List<String> getEvents() {
         return events;
     }
 

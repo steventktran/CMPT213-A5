@@ -12,12 +12,12 @@ public class Course implements Comparable<Course>, Observable{
     private List<Observer> listOfObservers = new ArrayList<>();
 
     @Override
-    public void add(Observer observer) {
+    public void addObserver(Observer observer) {
         listOfObservers.add(observer);
     }
 
     @Override
-    public void delete(Observer observer) {
+    public void deleteObserver(Observer observer) {
         listOfObservers.remove(observer);
     }
 
@@ -32,6 +32,8 @@ public class Course implements Comparable<Course>, Observable{
     public int compareTo(Course other) {
         return catalogNumber.compareTo(other.catalogNumber);
     }
+
+    public Course() { }
 
     public Course(String catalogNumber) {
         this.catalogNumber = catalogNumber.trim();

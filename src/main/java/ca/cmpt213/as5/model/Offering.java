@@ -13,7 +13,6 @@ public class Offering implements Comparable<Offering>{
     private int semesterCode;
     private int year;
     private List<Component> componentList = new ArrayList<>();
-    private List<Observer> observerList;
 
     @Override
     public int compareTo(Offering other) {

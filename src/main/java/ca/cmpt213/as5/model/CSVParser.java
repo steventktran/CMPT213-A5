@@ -105,7 +105,10 @@ public class CSVParser {
             addToCourseList(department, course, offering, component);
         }
         read.close();
+        sort();
+    }
 
+    public void sort() {
         Collections.sort(departments);
         for(Department department: departments) {
             Collections.sort(department.getCourseList());
