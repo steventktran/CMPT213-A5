@@ -87,7 +87,7 @@ public class CSVParser {
 
             List<String> courseOfferingFields = new ArrayList<>();
             courseOfferingFields.add(fields[LOCATION_INDEX]);
-            for(int i = INSTRUCTOR_INDEX; i <= COMPONENT_INDEX; i++) {
+            for(int i = INSTRUCTOR_INDEX; i < COMPONENT_INDEX; i++) {
                 courseOfferingFields.add(fields[i]);
             }
             courseOfferingFields.add(fields[SEMESTER_CODE_INDEX]);

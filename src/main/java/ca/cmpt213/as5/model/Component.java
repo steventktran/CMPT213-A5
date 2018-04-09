@@ -22,11 +22,8 @@ public class Component implements Comparable<Component>{
 
     public Component(List<String> fields) {
         enrollmentCap = parseInt(fields.get(0));
-        System.out.println("Enrollment CAP: " + enrollmentCap);
         enrollmentTotal = parseInt(fields.get(1));
-        System.out.println("Enrollment Total: " + enrollmentTotal);
         component = fields.get(2).trim();
-        System.out.println("Component: " + component);
     }
 
     public String getComponent() {

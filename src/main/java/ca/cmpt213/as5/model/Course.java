@@ -83,6 +83,7 @@ public class Course implements Comparable<Course>, Observable{
                 return;
             }
         }
+
         //If not duplicate, add to course list
         newOffering.setCourseOfferingId(offeringList.size());
         newOffering.addToComponentList(newComponent);

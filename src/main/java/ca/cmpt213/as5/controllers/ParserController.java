@@ -75,6 +75,8 @@ public class ParserController {
     @GetMapping("/api/departments/{dId}/courses/{cId}/offerings")
     public List<Offering> getOfferings(@PathVariable("dId") int deptID,
                                        @PathVariable("cId") int courseID) {
+
+
         return theParser.getDepartments()
                 .get(deptID)
                 .getCourseList()
@@ -133,7 +135,7 @@ public class ParserController {
         }
     }
 
-    private void utilityHelpOfferingMethod(@RequestBody OfferingsPlaceholder placeholder, Department department) {
+    private void utilityHelpOfferingMethod(OfferingsPlaceholder placeholder, Department department) {
         Course newCourse = new Course(placeholder.catalogNumber);
 
         //Create an list of strings for fields to avoid creating a new constructor
@@ -154,6 +156,7 @@ public class ParserController {
 
         newOffering.addToComponentList(courseComponent);
 
+        //Notify observers
         for(Course course : department.getCourseList()) {
             if(course.getCatalogNumber().equals(placeholder.catalogNumber)) {
                 course.notifyAddObservers(newOffering, courseComponent);
@@ -162,6 +165,7 @@ public class ParserController {
 
         theParser.addToCourseList(department, newCourse, newOffering, courseComponent);
         newCourse.setCourseId(department.getCourseList().size());
+
         theParser.sort();
 
     }

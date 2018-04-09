@@ -39,14 +39,14 @@ curl -i -s -H 'Content-Type: application/json' -X POST -d '{
 
 //TEST normal offering
 curl -i -s -H 'Content-Type: application/json' -X POST -d '{
-        "semester": 1191,
+        "semester": 1171,
         "subjectName": "CMPT",
-        "catalogNumber": 130,
-        "location": "Surrey",
-        "enrollmentCap": 123,
+        "catalogNumber": 300,
+        "location": "",
+        "enrollmentCap": 130,
         "component": "LEC",
-        "enrollmentTotal": 110,
-        "instructor": "Filthy Frank"
+        "enrollmentTotal": 70,
+        "instructor": "Andy"
     }' localhost:8080/api/addoffering
 
 
@@ -64,7 +64,7 @@ curl -i -X DELETE localhost:8080/api/watchers/1
 
 #Error Testing Commands - ALL SHOULD RETURN 404s
 #Replace ${DEPT} and ${COURSE} with your respective numbers.
-curl -i -s -H "Content-Type: application/json" -X GET ${SERVER}/api/departments/99999/courses
+curl -i -s -H "Content-Type: application/json" -X GET localhost:8080/api/departments/99999/courses
 curl -i -s -H "Content-Type: application/json" -X GET ${SERVER}/api/departments/${DEPT}/courses/99999/offerings
 curl -i -s -H "Content-Type: application/json" -X GET ${SERVER}/api/departments/9999/courses/${COURSE}/offerings
 curl -i -s -H "Content-Type: application/json" -X GET ${SERVER}/api/departments/99999/courses/${COURSE}/offerings/${OFFERING}
