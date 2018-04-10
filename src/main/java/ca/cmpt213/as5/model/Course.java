@@ -86,17 +86,17 @@ public class Course implements Comparable<Course>, Iterable<Offering>, Observabl
             if(offering.getLocation().equals(newOffering.getLocation())
                     && offering.getSemesterCode() == newOffering.getSemesterCode()) {
 
-                //Check to see if only instructors were missing; if so, add missing instructors to list of instructors
-//                if(!offering.getInstructorList().equals(newOffering.getInstructorList())) {
-//                    offering.addInstructor(newOffering.getInstructorList());
-//                    return;
-//                } else {
-//                    offering.addToComponentList((newComponent));
-//                    return;
-//                }
+//                Check to see if only instructors were missing; if so, add missing instructors to list of instructors
+                if(!offering.getInstructorList().equals(newOffering.getInstructorList())) {
+                    offering.addInstructor(newOffering.getInstructorList());
+                    return;
+                } else {
+                    offering.addToComponentList((newComponent));
+                    return;
+                }
 
-                offering.addToComponentList((newComponent));
-                return;
+//                offering.addToComponentList((newComponent));
+//                return;
             }
         }
 

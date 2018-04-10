@@ -8,8 +8,6 @@ import static java.lang.Integer.parseInt;
  * This component class has the purpose of storing enrollingCap and totals.
  * The purpose of this is to allow the grouping of all offerings under one course.
  */
-
-
 public class Component implements Comparable<Component>{
     private int enrollmentCap;
     private int enrollmentTotal;
@@ -26,11 +24,11 @@ public class Component implements Comparable<Component>{
         component = fields.get(2).trim();
     }
 
-    public String getComponent() {
+    public String getType() {
         return component;
     }
 
-    public void setComponent(String component) {
+    public void setType(String component) {
         this.component = component;
     }
 

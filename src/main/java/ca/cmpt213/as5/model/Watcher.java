@@ -22,7 +22,7 @@ public class Watcher implements Observer{
     public void addUpdate(Offering newOffering, Component newComponent) {
         Date date = new Date();
         String currentDate = date.toString();
-        String type = newComponent.getComponent();
+        String type = newComponent.getType();
         String enrollmentTotal = "" + newComponent.getEnrollmentTotal();
         String enrollmentCap = "" + newComponent.getEnrollmentCap();
         String term = newOffering.getTerm();

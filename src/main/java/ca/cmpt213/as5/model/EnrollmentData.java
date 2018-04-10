@@ -28,7 +28,7 @@ public class EnrollmentData implements Comparable<EnrollmentData>{
     public int getEnrolledToLec(Offering offering) {
         int enrollment = 0;
         for(Component component: offering) {
-            if(component.getComponent().equals("LEC")) {
+            if(component.getType().equals("LEC")) {
                 enrollment += component.getEnrollmentTotal();
             }
         }

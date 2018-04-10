@@ -171,7 +171,7 @@ public class CSVParser implements Iterable<Department>{
                     builder.append("\t" + offering.getSemesterCode() + " in "
                             + offering.getLocation() + " by " + offering.getInstructors() + "\n");
                     for(Component component: offering) {
-                        builder.append("\t\t" + "Type=" + component.getComponent() + ", Enrollment="
+                        builder.append("\t\t" + "Type=" + component.getType() + ", Enrollment="
                                 + component.getEnrollmentTotal() + "/"
                                 + component.getEnrollmentCap() + "\n");
                     }

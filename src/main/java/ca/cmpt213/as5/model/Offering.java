@@ -75,13 +75,11 @@ public class Offering implements Comparable<Offering>, Iterable<Component>{
             instructorString = instructors.get(0);
             return instructorString;
         }
-
         else {
             for(int i = 0; i < instructors.size(); i++) {
                 if(i == 0) {
                     instructorString += instructors.get(i);
-                }
-                else {
+                } else {
                     instructorString += ", " + instructors.get(i);
                 }
             }
@@ -99,7 +97,6 @@ public class Offering implements Comparable<Offering>, Iterable<Component>{
                 instructors.add(newInstructor);
             }
         }
-
     }
 
     public String getTerm() {
@@ -138,7 +135,7 @@ public class Offering implements Comparable<Offering>, Iterable<Component>{
     public void addToComponentList(Component newComponent) {
         //Check for duplicate component, if it is then simply add their enrollment caps and totals together
         for(Component component: componentList) {
-            if(component.getComponent().equals(newComponent.getComponent())) {
+            if(component.getType().equals(newComponent.getType())) {
                 component.addEnrollmentCap(newComponent.getEnrollmentCap());
                 component.addEnrollmentTotal(newComponent.getEnrollmentTotal());
                 return;
