@@ -2,6 +2,7 @@ package ca.cmpt213.as5.controllers;
 
 import ca.cmpt213.as5.exceptions.CourseNotFoundException;
 import ca.cmpt213.as5.exceptions.DepartmentNotFoundException;
+import ca.cmpt213.as5.exceptions.OfferingNotFoundException;
 import ca.cmpt213.as5.exceptions.WatcherNotFoundException;
 import ca.cmpt213.as5.model.*;
 import ca.cmpt213.as5.placeHolderJsonObjects.OfferingsPlaceholder;
@@ -43,14 +44,6 @@ public class ParserController {
         System.out.println(theParser.printCourseList());
     }
 
-    //Handles a file not found exception.
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST,
-            reason = "File not found.")
-    @ExceptionHandler(FileNotFoundException.class)
-    public void firstMoveExceptionExceptionHandler() {
-
-    }
-
     //Get Mapping for about
     @GetMapping("/api/about")
     public About getAboutMessage() {
@@ -65,7 +58,11 @@ public class ParserController {
 
     //Get mapping for a list of courses
     @GetMapping("/api/departments/{id}/courses")
-    public List<Course> getCourses(@PathVariable("id") int deptID) {
+    public List<Course> getCourses(@PathVariable("id") int deptID) throws DepartmentNotFoundException
+    {
+        if(theParser.getDepartment(deptID) == null) {
+            throw new DepartmentNotFoundException("Department of ID " + deptID + " cannot be found.");
+        }
         return theParser.getDepartment(deptID)
                 .getCourseList();
     }
@@ -73,19 +70,34 @@ public class ParserController {
     //Get mapping for a list of offerings
     @GetMapping("/api/departments/{dId}/courses/{cId}/offerings")
     public List<Offering> getOfferings(@PathVariable("dId") int deptID,
-                                       @PathVariable("cId") int courseID) {
+                                       @PathVariable("cId") int courseID) throws DepartmentNotFoundException, CourseNotFoundException
+    {
+            if(theParser.getDepartment(deptID) == null) {
+                throw new DepartmentNotFoundException("Department of ID " + deptID + " cannot be found.");
+            } else if(theParser.getDepartment(deptID).getCourse(courseID) == null) {
+                throw new CourseNotFoundException("Course of ID " + courseID + " cannot be found.");
+            }
 
+            return theParser.getDepartment(deptID)
+                    .getCourse(courseID)
+                    .getOfferingList();
 
-        return theParser.getDepartment(deptID)
-                .getCourse(courseID)
-                .getOfferingList();
     }
 
     //Get Mapping for list of sections of a particular offering
     @GetMapping("/api/departments/{dId}/courses/{cId}/offerings/{oId}")
     public List<Component> getOfferings(@PathVariable("dId") int deptID,
                                        @PathVariable("cId") int courseID,
-                                       @PathVariable("oId") int offeringID) {
+                                       @PathVariable("oId") int offeringID)
+                                        throws DepartmentNotFoundException, CourseNotFoundException, OfferingNotFoundException
+    {
+        if(theParser.getDepartment(deptID) == null) {
+            throw new DepartmentNotFoundException("Department of ID " + deptID + " cannot be found.");
+        } else if(theParser.getDepartment(deptID).getCourse(courseID) == null) {
+            throw new CourseNotFoundException("Course of ID " + courseID + " cannot be found.");
+        } else if(theParser.getDepartment(deptID).getCourse(courseID).getOffering(offeringID) == null) {
+            throw new OfferingNotFoundException("Offering of ID " + offeringID + " cannot be found.");
+        }
         return theParser.getDepartment(deptID)
                 .getCourse(courseID)
                 .getOffering(offeringID)
@@ -218,6 +230,8 @@ public class ParserController {
         throw new WatcherNotFoundException();
     }
 
+    @ResponseStatus(value = HttpStatus.NO_CONTENT,
+                        reason = "Watcher Deleted.")
     @DeleteMapping("/api/watchers/{id}")
     public void deleteWatcher(@PathVariable("id") long watcherID) throws WatcherNotFoundException {
 
@@ -262,7 +276,13 @@ public class ParserController {
         listOfWatchers.remove(seekingWatcher);
     }
 
+    //Handles a file not found exception.
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST,
+            reason = "File not found.")
+    @ExceptionHandler(FileNotFoundException.class)
+    public void firstMoveExceptionExceptionHandler() {
 
+    }
 
     //Handle Exception for when the watcher cannot be found
     @ResponseStatus(value = HttpStatus.BAD_REQUEST,
@@ -286,6 +306,14 @@ public class ParserController {
             reason = "Course cannot be found.")
     @ExceptionHandler(CourseNotFoundException.class)
     public void courseNotFoundExceptionHandler() {
+
+    }
+
+    //Handle Exception for when the offering cannot be found
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST,
+            reason = "Class offering cannot be found.")
+    @ExceptionHandler(OfferingNotFoundException.class)
+    public void OfferingNotFoundExceptionHandler() {
 
     }
 

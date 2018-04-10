@@ -1,12 +1,12 @@
 package ca.cmpt213.as5.exceptions;
 
-public class CourseNotFoundException extends Exception{
+public class OfferingNotFoundException extends Exception{
     public String message;
-    public CourseNotFoundException() {
+    public OfferingNotFoundException() {
         super();
     }
 
-    public CourseNotFoundException(String message) {
+    public OfferingNotFoundException(String message) {
         this.message = message;
     }
 
@@ -15,3 +15,4 @@ public class CourseNotFoundException extends Exception{
         return message;
     }
 }
+
