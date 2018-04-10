@@ -33,6 +33,7 @@ public class ParserController {
     private final static int SPRING_SEMESTER_CODE = 1;
     private final static int SUMMER_SEMESTER_CODE = 4;
     private final static int FALL_SEMESTER_CODE = 7;
+
     public ParserController() {
         try {
             theParser = new CSVParser(filePath);
@@ -41,39 +42,33 @@ public class ParserController {
         }
     }
 
-    //Get Mapping
     @GetMapping("/api/dump-model")
-    public void getDumpModel() throws FileNotFoundException{
+    public void getDumpModel() throws FileNotFoundException {
         System.out.println(theParser.printCourseList());
     }
 
-    //Get Mapping for about
     @GetMapping("/api/about")
     public About getAboutMessage() {
         return aboutNotice;
     }
 
-    //Get mapping for list of departments
     @GetMapping("/api/departments")
     public List<Department> getDepartments() {
         return theParser.getDepartments();
     }
 
-    //Get mapping for a list of courses
     @GetMapping("/api/departments/{id}/courses")
-    public List<Course> getCourses(@PathVariable("id") int deptID) throws DepartmentNotFoundException
-    {
+    public List<Course> getCourses(@PathVariable("id") int deptID) throws DepartmentNotFoundException {
         if(theParser.getDepartment(deptID) == null) {
             throw new DepartmentNotFoundException("Department of ID " + deptID + " cannot be found.");
         }
-        return theParser.getDepartment(deptID)
-                .getCourseList();
+        return theParser.getDepartment(deptID).getCourseList();
     }
 
-    //Get mapping for a list of offerings
     @GetMapping("/api/departments/{dId}/courses/{cId}/offerings")
     public List<Offering> getOfferings(@PathVariable("dId") int deptID,
-                                       @PathVariable("cId") int courseID) throws DepartmentNotFoundException, CourseNotFoundException
+                                       @PathVariable("cId") int courseID)
+                                        throws DepartmentNotFoundException, CourseNotFoundException
     {
             if(theParser.getDepartment(deptID) == null) {
                 throw new DepartmentNotFoundException("Department of ID " + deptID + " cannot be found.");
@@ -87,7 +82,6 @@ public class ParserController {
 
     }
 
-    //Get Mapping for list of sections of a particular offering
     @GetMapping("/api/departments/{dId}/courses/{cId}/offerings/{oId}")
     public List<Component> getOfferings(@PathVariable("dId") int deptID,
                                        @PathVariable("cId") int courseID,
@@ -114,19 +108,17 @@ public class ParserController {
         int lastSemester = theParser.getDepartment(deptId).getLastSemesterCode();
         for(int i = firstSemester; i < lastSemester; i++) {
             // %10 to only get the last digit
-            if(i%10 == SPRING_SEMESTER_CODE || i%10 == SUMMER_SEMESTER_CODE|| i%10 == FALL_SEMESTER_CODE) {
+            if(i % 10 == SPRING_SEMESTER_CODE || i % 10 == SUMMER_SEMESTER_CODE|| i % 10 == FALL_SEMESTER_CODE) {
                 enrollmentData.add(new EnrollmentData(i, theParser.getDepartment(deptId)));
             }
         }
         return enrollmentData;
     }
 
-
     @PostMapping("/api/addoffering")
     public void addOffering(@RequestBody OfferingsPlaceholder placeholder) {
         boolean foundDepartment = false;
         Department placeholderDepartment = new Department();
-
 
         for(Department department : theParser) {
             if(department.getName().equals(placeholder.subjectName)) {
@@ -138,12 +130,10 @@ public class ParserController {
 
         utilityHelpOfferingMethod(placeholder, placeholderDepartment);
 
-
         if(!foundDepartment) {
             Department newDepartment = new Department(placeholder.subjectName);
             utilityHelpOfferingMethod(placeholder, newDepartment);
             theParser.getDepartments().add(newDepartment);
-
         }
     }
 
@@ -179,11 +169,9 @@ public class ParserController {
         newCourse.setCourseId(department.getCourseList().size());
 
         theParser.sort();
-
     }
 
 
-    //Returns the list of all the watchers that were created.
     @GetMapping("/api/watchers")
     public List<Watcher> getAllWatchers() {
         return listOfWatchers;
@@ -193,12 +181,10 @@ public class ParserController {
     //Adds a watcher to the list, Notifies the course that there is an observer.
     @PostMapping("/api/watchers")
     public Watcher addWatcher(@RequestBody WatcherPlaceholder placeholder) throws CourseNotFoundException, DepartmentNotFoundException {
-
         Watcher watcher = new Watcher(nextWatcherID.incrementAndGet(), placeholder.deptId, placeholder.courseId, theParser);
 
         boolean foundDepartment = false;
         boolean foundCourse = false;
-
 
         for(Department department : theParser) {
             if(department.getDeptId() == placeholder.deptId) {
@@ -232,22 +218,18 @@ public class ParserController {
                 return watcher;
             }
         }
-
         throw new WatcherNotFoundException();
     }
 
-    @ResponseStatus(value = HttpStatus.NO_CONTENT,
-                        reason = "Watcher Deleted.")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT, reason = "Watcher Deleted.")
     @DeleteMapping("/api/watchers/{id}")
     public void deleteWatcher(@PathVariable("id") long watcherID) throws WatcherNotFoundException {
-
         boolean foundWatcher = false;
 
         Course seekingCourse = new Course();
         Watcher seekingWatcher = new Watcher();
 
         for(Watcher watcher : listOfWatchers) {
-
             if(watcher.getWatcherID() == watcherID) {
                 foundWatcher = true;
                 seekingWatcher = watcher;
@@ -269,7 +251,6 @@ public class ParserController {
                         break;
                     }
                 }
-
                 break;
             }
         }
@@ -282,46 +263,23 @@ public class ParserController {
         listOfWatchers.remove(seekingWatcher);
     }
 
-    //Handles a file not found exception.
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST,
-            reason = "File not found.")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "File not found.")
     @ExceptionHandler(FileNotFoundException.class)
-    public void firstMoveExceptionExceptionHandler() {
+    public void firstMoveExceptionExceptionHandler() { }
 
-    }
-
-    //Handle Exception for when the watcher cannot be found
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST,
-            reason = "Watcher cannot be found.")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Watcher cannot be found.")
     @ExceptionHandler(WatcherNotFoundException.class)
-    public void watcherNotFoundExceptionHandler() {
+    public void watcherNotFoundExceptionHandler() { }
 
-    }
-
-
-    //Handle Exception for when the department cannot be found
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST,
-            reason = "Department cannot be found.")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Department cannot be found.")
     @ExceptionHandler(DepartmentNotFoundException.class)
-    public void departmentNotFoundExceptionHandler() {
+    public void departmentNotFoundExceptionHandler() { }
 
-    }
-
-    //Handle Exception for when the course cannot be found
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST,
-            reason = "Course cannot be found.")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Course cannot be found.")
     @ExceptionHandler(CourseNotFoundException.class)
-    public void courseNotFoundExceptionHandler() {
+    public void courseNotFoundExceptionHandler() { }
 
-    }
-
-    //Handle Exception for when the offering cannot be found
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST,
-            reason = "Class offering cannot be found.")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Class offering cannot be found.")
     @ExceptionHandler(OfferingNotFoundException.class)
-    public void OfferingNotFoundExceptionHandler() {
-
-    }
-
-
+    public void OfferingNotFoundExceptionHandler() { }
 }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Offering implements Comparable<Offering>, Iterable<Component>{
+public class Offering implements Comparable<Offering>, Iterable<Component> {
     private long courseOfferingId;
     private String location;
     private List<String> instructors = new ArrayList<>();
@@ -52,6 +52,8 @@ public class Offering implements Comparable<Offering>, Iterable<Component>{
         } else if(semesterField.substring(semesterField.length() - 1).equals("7")) {
             term = "Fall";
         }
+
+
         semesterCode = Integer.parseInt(semesterField);
 
         this.courseOfferingId = courseOfferingId;
