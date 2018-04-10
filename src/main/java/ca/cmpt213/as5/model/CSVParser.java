@@ -75,31 +75,6 @@ public class CSVParser implements Iterable<Department>{
         this.file = file;
     }
 
-    public int getFirstSemesterCode() {
-        int firstSemester = 0;
-        for(Department department: departments) {
-            for(Course course: department) {
-                int semesterCode = course.getOfferingList().get(0).getSemesterCode();
-                if(semesterCode < firstSemester || firstSemester == 0) {
-                    firstSemester = semesterCode;
-                }
-            }
-        }
-        return firstSemester;
-    }
-
-    public int getLastSemesterCode() {
-        int lastSemester = 0;
-        for(Department department: departments) {
-            for(Course course: department) {
-                int semesterCode = course.getOfferingList().get(course.getOfferingList().size() - 1).getSemesterCode();
-                if(semesterCode > lastSemester) {
-                    lastSemester = semesterCode;
-                }
-            }
-        }
-        return lastSemester;
-    }
 
     public void parseFile() throws FileNotFoundException {
         Scanner read = new Scanner(file);

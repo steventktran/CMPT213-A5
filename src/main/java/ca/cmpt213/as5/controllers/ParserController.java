@@ -107,7 +107,9 @@ public class ParserController {
     @GetMapping("/api/stats/students-per-semester")
     public List<EnrollmentData> getEnrollmentList(@RequestParam int deptId) {
         List<EnrollmentData> enrollmentData = new ArrayList<>();
-        for(int i = theParser.getFirstSemesterCode(); i < theParser.getLastSemesterCode(); i++) {
+        int firstSemester = theParser.getDepartment(deptId).getFirstSemesterCode();
+        int lastSemester = theParser.getDepartment(deptId).getLastSemesterCode();
+        for(int i = firstSemester; i < lastSemester; i++) {
             if(i%10 == 1 || i%10 == 4 || i%10 == 7) {
                 enrollmentData.add(new EnrollmentData(i, theParser.getDepartment(deptId)));
             }
