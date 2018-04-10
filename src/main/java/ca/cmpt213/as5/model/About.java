@@ -1,5 +1,10 @@
 package ca.cmpt213.as5.model;
 
+/**
+ * A simple About object to store our names and details
+ */
+
+
 public class About {
     private String appName;
     private String authorName;

@@ -1,14 +1,15 @@
 package ca.cmpt213.as5.model;
-/**
- * Class representing a specific class offering, containing a unique courseOfferingId, as well as the location, term,
- * year, and semester code for the class offering. Also contains a list of class components that is part of this offering.
- */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+/**
+ * Class representing a specific class offering, containing a unique courseOfferingId, as well as the location, term,
+ * year, and semester code for the class offering. Also contains a list of class components that is part of this offering.
+ */
 
 public class Offering implements Comparable<Offering>, Iterable<Component> {
     private long courseOfferingId;

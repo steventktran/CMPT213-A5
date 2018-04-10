@@ -1,13 +1,15 @@
 package ca.cmpt213.as5.model;
 
-/**
- * Class that is responsible for parsing a CSV file and creating Class Offerings stored in correct lists.
- */
+
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+
+/**
+ * Class that is responsible for parsing a CSV file and creating Class Offerings stored in correct lists.
+ */
 
 public class CSVParser implements Iterable<Department>{
     private List<Department> departments = new ArrayList<>();

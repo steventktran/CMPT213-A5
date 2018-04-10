@@ -1,14 +1,18 @@
 package ca.cmpt213.as5.model;
-/**
- * Class representing a Course, containing a unique courseId, the catalogue number of the course, as well as a list
- * of all offerings of this course.
- */
+
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+/**
+ * Class representing a Course, containing a unique courseId, the catalogue number of the course, as well as a list
+ * of all offerings of this course.
+ */
+
+
 
 public class Course implements Comparable<Course>, Iterable<Offering>, Observable {
     private long courseId;
