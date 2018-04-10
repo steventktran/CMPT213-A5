@@ -1,4 +1,8 @@
 package ca.cmpt213.as5.model;
+/**
+ * Class representing a Course, containing a unique courseId, the catalogue number of the course, as well as a list
+ * of all offerings of this course.
+ */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -6,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Course implements Comparable<Course>, Iterable<Offering>, Observable{
+public class Course implements Comparable<Course>, Iterable<Offering>, Observable {
     private long courseId;
     private String catalogNumber;
     private List<Offering> offeringList = new ArrayList<>();
@@ -84,9 +88,9 @@ public class Course implements Comparable<Course>, Iterable<Offering>, Observabl
         //Check for duplicate course; if there is, let Offering check for duplicates
         for(Offering offering: offeringList) {
             if(offering.getLocation().equals(newOffering.getLocation())
-                    && offering.getSemesterCode() == newOffering.getSemesterCode()) {
-
-//                Check to see if only instructors were missing; if so, add missing instructors to list of instructors
+                    && offering.getSemesterCode() == newOffering.getSemesterCode())
+            {
+                //Check to see if only instructors were missing; if so, add missing instructors to list of instructors
                 if(!offering.getInstructorList().equals(newOffering.getInstructorList())) {
                     offering.addInstructor(newOffering.getInstructorList());
                     return;
@@ -94,14 +98,10 @@ public class Course implements Comparable<Course>, Iterable<Offering>, Observabl
                     offering.addToComponentList((newComponent));
                     return;
                 }
-
-//                offering.addToComponentList((newComponent));
-//                return;
             }
         }
 
         //If not duplicate, add to course list
-        newOffering.setCourseOfferingId(offeringList.size());
         newOffering.addToComponentList(newComponent);
         offeringList.add(newOffering);
     }

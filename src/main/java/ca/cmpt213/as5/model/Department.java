@@ -1,5 +1,10 @@
 package ca.cmpt213.as5.model;
 
+/**
+ * Class representing a Department, which contains a department ID, the name of the department, as well as
+ * all Courses that are taught by this department.
+ */
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
