@@ -1,4 +1,8 @@
 package ca.cmpt213.as5.model;
+/**
+ * Class representing a specific class offering, containing a unique courseOfferingId, as well as the location, term,
+ * year, and semester code for the class offering. Also contains a list of class components that is part of this offering.
+ */
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -33,10 +37,14 @@ public class Offering implements Comparable<Offering>, Iterable<Component>{
 
         String semesterField = fields.get(fields.size() - 1);
 
+        //First digit of a semesterCode denotes the century
         int century = Integer.parseInt(semesterField.substring(0, 1));
+
+        //Middle two digits denote the year
         int year = Integer.parseInt(semesterField.substring(1,3));
         this.year = 1900 + (century * 100) + year;
 
+        //Final digit denotes which term in the year
         if(semesterField.substring(semesterField.length() - 1).equals("1")) {
             term = "Spring";
         } else if(semesterField.substring(semesterField.length() - 1).equals("4")) {

@@ -30,6 +30,9 @@ public class ParserController {
     private List<Watcher> listOfWatchers = new ArrayList<>();
     private AtomicLong nextWatcherID = new AtomicLong();
 
+    private final static int SPRING_SEMESTER_CODE = 1;
+    private final static int SUMMER_SEMESTER_CODE = 4;
+    private final static int FALL_SEMESTER_CODE = 7;
     public ParserController() {
         try {
             theParser = new CSVParser(filePath);
@@ -110,7 +113,8 @@ public class ParserController {
         int firstSemester = theParser.getDepartment(deptId).getFirstSemesterCode();
         int lastSemester = theParser.getDepartment(deptId).getLastSemesterCode();
         for(int i = firstSemester; i < lastSemester; i++) {
-            if(i%10 == 1 || i%10 == 4 || i%10 == 7) {
+            // %10 to only get the last digit
+            if(i%10 == SPRING_SEMESTER_CODE || i%10 == SUMMER_SEMESTER_CODE|| i%10 == FALL_SEMESTER_CODE) {
                 enrollmentData.add(new EnrollmentData(i, theParser.getDepartment(deptId)));
             }
         }
