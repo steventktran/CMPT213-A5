@@ -102,8 +102,11 @@ public class ParserController {
     }
 
     @GetMapping("/api/stats/students-per-semester")
-    public List<EnrollmentData> getEnrollmentList(@RequestParam int deptId) {
+    public List<EnrollmentData> getEnrollmentList(@RequestParam int deptId) throws DepartmentNotFoundException{
         List<EnrollmentData> enrollmentData = new ArrayList<>();
+        if(theParser.getDepartment(deptId) == null) {
+            throw new DepartmentNotFoundException("Department of ID " + deptId + " cannot be found.");
+        }
         int firstSemester = theParser.getDepartment(deptId).getFirstSemesterCode();
         int lastSemester = theParser.getDepartment(deptId).getLastSemesterCode();
         for(int i = firstSemester; i < lastSemester; i++) {
@@ -263,23 +266,23 @@ public class ParserController {
         listOfWatchers.remove(seekingWatcher);
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "File not found.")
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "File not found.")
     @ExceptionHandler(FileNotFoundException.class)
     public void firstMoveExceptionExceptionHandler() { }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Watcher cannot be found.")
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Watcher cannot be found.")
     @ExceptionHandler(WatcherNotFoundException.class)
     public void watcherNotFoundExceptionHandler() { }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Department cannot be found.")
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Department cannot be found.")
     @ExceptionHandler(DepartmentNotFoundException.class)
     public void departmentNotFoundExceptionHandler() { }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Course cannot be found.")
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Course cannot be found.")
     @ExceptionHandler(CourseNotFoundException.class)
     public void courseNotFoundExceptionHandler() { }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Class offering cannot be found.")
+    @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Class offering cannot be found.")
     @ExceptionHandler(OfferingNotFoundException.class)
     public void OfferingNotFoundExceptionHandler() { }
 }
