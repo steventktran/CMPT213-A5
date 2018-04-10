@@ -42,11 +42,11 @@ curl -i -s -H 'Content-Type: application/json' -X POST -d '{
         "semester": 1171,
         "subjectName": "CMPT",
         "catalogNumber": 300,
-        "location": "",
+        "location": "Back Alley",
         "enrollmentCap": 130,
         "component": "LEC",
-        "enrollmentTotal": 70,
-        "instructor": "Andy"
+        "enrollmentTotal": 1000,
+        "instructor": "Alvin"
     }' localhost:8080/api/addoffering
 
 

@@ -1,6 +1,11 @@
 package ca.cmpt213.as5.placeHolderJsonObjects;
 
-//Pojo file
+/**
+ * A place holder object to store the
+ * fields for when
+ * we call @RequestParam
+ */
+
 public class WatcherPlaceholder {
     public long deptId;
     public long courseId;

@@ -1,6 +1,13 @@
 package ca.cmpt213.as5.placeHolderJsonObjects;
 
-//Pojo Object.
+
+/**
+ * A place holder object to store the
+ * fields for when
+ * we call @RequestParam
+ */
+
+
 public class OfferingsPlaceholder {
     public int semester;
     public String subjectName;
